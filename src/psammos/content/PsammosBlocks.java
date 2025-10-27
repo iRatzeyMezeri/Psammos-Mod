@@ -42,6 +42,8 @@ import psammos.world.blocks.legacy.*;
 import psammos.world.blocks.liquid.*;
 import psammos.world.blocks.power.*;
 import psammos.world.blocks.production.*;
+import psammos.world.blocks.radiation.RadiationSource;
+import psammos.world.blocks.radiation.RadiationVoid;
 import psammos.world.blocks.units.*;
 import psammos.world.draw.*;
 import psammos.entities.bullet.*;
@@ -70,6 +72,9 @@ public class PsammosBlocks {
     //Power
     electricPole, electricDistributor, led, accumulator,
     windTurbine, piezoelectricGenerator, impulseGenerator, liquidFuelBurner, thermoelectricGenerator, heatEngine,
+
+    //Radiation
+    radiationSource, radiationVoid,
 
     //Defense
     osmiumWall, osmiumWallLarge, silverWall, silverWallLarge,
@@ -1640,6 +1645,16 @@ public class PsammosBlocks {
                 addBar("overheat", (entity) -> new Bar("bar.psammos-overheat", Pal.redderDust, () -> ((VariableReactorBuild)entity).instability));
             }
         };
+
+        //Radiation
+
+        radiationSource = new RadiationSource("radiation-source"){{
+            category = Category.power;
+        }};
+
+        radiationVoid = new RadiationVoid("radiation-void"){{
+            category = Category.power;
+        }};
 
         // Defense
         int wallHealthMultiplier = 4;
