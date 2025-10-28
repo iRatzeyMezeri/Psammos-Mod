@@ -5,10 +5,18 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.ButtonGroup;
+import arc.scene.ui.ImageButton;
 import arc.scene.ui.layout.*;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Log;
 import arc.util.io.*;
+import mindustry.entities.units.BuildPlan;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.ui.Styles;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 import psammos.*;
@@ -58,9 +66,14 @@ public class RadiationSource extends Block {
     }
 
     @Override
+    public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid) {
+        super.drawPlan(plan, list, valid);
+        Draw.rect(Mathf.mod(plan.rotation, 4) > 1 ? topRegions[1] : topRegions[0], plan.drawx(), plan.drawy(), plan.rotation * 90);
+    }
+
+    @Override
     public void drawPlace(int x, int y, int rotation, boolean valid) {
         super.drawPlace(x, y, rotation, valid);
-        Draw.rect(Mathf.mod(rotation, 4) > 1 ? topRegions[1] : topRegions[0], x * tilesize, y * tilesize, rotation * 90);
 
         int maxLen = range + size/2;
         int gx = Geometry.d4x[rotation];
@@ -91,18 +104,14 @@ public class RadiationSource extends Block {
         }
 
         @Override
+        public void updateTile() {
+            super.updateTile();
+            RadiationUtil.handleRadiationEmission(this, rotation);
+        }
+
+        @Override
         public void drawSelect() {
             super.drawSelect();
-
-            int maxLen = range + size/2;
-            int gx = Geometry.d4x[rotation];
-            int gy = Geometry.d4y[rotation];
-            Drawf.dashLine(radOutputType == null ? PPal.desertGlass : radOutputType.color,
-                    x + gx * (tilesize * size / 2f + 2),
-                    y + gy * (tilesize * size / 2f + 2),
-                    x + gx * maxLen * tilesize,
-                    y + gy * maxLen * tilesize
-            );
 
             if (radOutputType != null) {
                 float dx = x - block.size * tilesize / 2f;
@@ -128,18 +137,27 @@ public class RadiationSource extends Block {
         }
 
         @Override
-        public float[] outputRadiationFrac() {
-            return new float[]{1f, 1f, 1f, 1f};
-        }
-
-        @Override
         public float radBeamRange() {
             return range;
         }
 
         @Override
         public void buildConfiguration(Table table){
-            //TODO
+            ButtonGroup<ImageButton> group = new ButtonGroup<>();
+            group.setMinCheckCount(0);
+            Table cont = new Table().background(Styles.black6).top();
+            cont.defaults().size(40);
+
+            for(RadiationType type : RadiationType.values()){
+                ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, 24f, () -> {
+                    control.input.config.hideConfig();
+                }).tooltip(type.localizedName()).group(group).get();
+                button.changed(() -> configure(button.isChecked() ? type : null));
+                button.getStyle().imageUp = new TextureRegionDrawable(type.icon());
+                button.update(() -> button.setChecked(radOutputType == type));
+            }
+
+            table.add(cont);
         }
 
         @Override

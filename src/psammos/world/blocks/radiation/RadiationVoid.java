@@ -4,7 +4,6 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
-import psammos.type.RadiationStack;
 
 public class RadiationVoid extends Block {
 
@@ -17,10 +16,7 @@ public class RadiationVoid extends Block {
     }
 
     public class RadiationVoidBuild extends Building implements RadiationConsumer {
-
         @Override
-        public RadiationStack[] sideRadiation() {
-            return new RadiationStack[0];
-        }
+        public void addRadiationInput(Building build) {}
     }
 }

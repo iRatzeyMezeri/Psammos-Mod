@@ -7,6 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
+import arc.struct.Seq;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -14,7 +15,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.environment.StaticWall;
 import psammos.graphics.PDraw;
 import psammos.type.RadiationStack;
-import psammos.type.RadiationType;
 
 import static mindustry.Vars.*;
 
@@ -27,9 +27,37 @@ public class RadiationUtil {
         return new Point2(x, y);
     }
 
-    public static RadiationStack[] calculateSideRadiation(Building build){
-        //TODO
-        return new RadiationStack[4];
+    public static void handleRadiationEmission(Building build, int rotation){
+        Tile target = RadiationUtil.findRadiationTarget(build, rotation);
+        if (target != null && target.build instanceof RadiationConsumer consumer){
+            consumer.addRadiationInput(build);
+        }
+    }
+
+    public static void handleRadiationEmission(Building build){
+        for (int rotation = 0; rotation < 4; rotation++){
+            handleRadiationEmission(build, rotation);
+        }
+    }
+
+    public static RadiationStack[] calculateSideRadiation(Building build, Seq<Building> inputs){
+        RadiationStack[] sideRadiation = new RadiationStack[4];
+        inputs.forEach(b -> {
+            if (!(b instanceof RadiationEmitter emitter) || b.dead){
+                return;
+            }
+            int rotation = build.relativeTo(b);
+
+            if (emitter.outputRadiation()[(rotation + 2) % 4] != null){
+                if (sideRadiation[rotation] == null){
+                    sideRadiation[rotation] = new RadiationStack(emitter.outputRadiation()[(rotation + 2) % 4].type, 0);
+                }
+                if (sideRadiation[rotation].type == emitter.outputRadiation()[(rotation + 2) % 4].type){
+                    sideRadiation[rotation].amount += emitter.outputRadiation()[(rotation + 2) % 4].amount;
+                }
+            }
+        });
+        return sideRadiation;
     }
 
     /** Finds the tile radiation hits if the building emits it in the specified direction.
@@ -57,6 +85,7 @@ public class RadiationUtil {
     }
 
     public static void drawRadiationBeams(Building build){
+        //TODO: Maybe make this a drawer?
         if (!(build instanceof RadiationEmitter)){
             return;
         }
@@ -67,16 +96,16 @@ public class RadiationUtil {
 
         for (int rotation = 0; rotation < 4; rotation++){
             RadiationStack radStack = emitter.outputRadiation()[rotation];
-            float amountFraction = emitter.outputRadiationFrac()[rotation];
 
-            if (radStack == null || radStack.type == null || amountFraction == 0){
+            if (radStack == null || radStack.type == null || radStack.amount == 0){
                 continue;
             }
 
             Tile target = RadiationUtil.findRadiationTarget(build, rotation);
             float dx = Geometry.d4x[rotation] * tilesize;
             float dy = Geometry.d4y[rotation] * tilesize;
-            Color color = radStack.type.color.cpy().a(amountFraction);
+            Color color = radStack.type.color.cpy();
+            float scale = Mathf.clamp(radStack.amount / 100f) *  0.5f;
             Draw.z(Layer.effect);
 
             if (target != null){
@@ -84,12 +113,12 @@ public class RadiationUtil {
                 Drawf.laser(beam, beamEnd,
                         build.x + dx * build.block.size / 2f, build.y + dy * build.block.size / 2f,
                         target.worldx() - dx / 2f, target.worldy() - dy / 2f,
-                        0.4f);
+                        scale);
             }else{
                 PDraw.gradientLaser(beam, beamEnd,
                         build.x + dx * build.block.size / 2f, build.y + dy * build.block.size / 2f, color,
                         build.x + dx * emitter.radBeamRange() * 1.2f, build.y + dy * emitter.radBeamRange() * 1.2f, Color.clear,
-                        0.4f);
+                        scale);
             }
             Draw.reset();
         }

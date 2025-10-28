@@ -11,7 +11,7 @@ public enum RadiationType {
     light("visible-light", Pal.accent.cpy()),
     UV("ultraviolet-light", Color.valueOf("a53cf0")),
     xRays("x-rays", Color.valueOf("6aaaf6")),
-    gamma("gamma-rays", Color.valueOf("f6ae59"));
+    gamma("gamma-rays", Color.valueOf("ea833e"));
 
     public final String name;
     public final Color color;

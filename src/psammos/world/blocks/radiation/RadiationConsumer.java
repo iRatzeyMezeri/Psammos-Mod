@@ -1,7 +1,7 @@
 package psammos.world.blocks.radiation;
 
-import psammos.type.RadiationStack;
+import mindustry.gen.Building;
 
 public interface RadiationConsumer {
-    RadiationStack[] sideRadiation();
+    void addRadiationInput(Building build);
 }

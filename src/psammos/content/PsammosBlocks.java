@@ -42,8 +42,7 @@ import psammos.world.blocks.legacy.*;
 import psammos.world.blocks.liquid.*;
 import psammos.world.blocks.power.*;
 import psammos.world.blocks.production.*;
-import psammos.world.blocks.radiation.RadiationSource;
-import psammos.world.blocks.radiation.RadiationVoid;
+import psammos.world.blocks.radiation.*;
 import psammos.world.blocks.units.*;
 import psammos.world.draw.*;
 import psammos.entities.bullet.*;
@@ -74,7 +73,7 @@ public class PsammosBlocks {
     windTurbine, piezoelectricGenerator, impulseGenerator, liquidFuelBurner, thermoelectricGenerator, heatEngine,
 
     //Radiation
-    radiationSource, radiationVoid,
+    radiationSource, radiationVoid, mirror,
 
     //Defense
     osmiumWall, osmiumWallLarge, silverWall, silverWallLarge,
@@ -1654,6 +1653,10 @@ public class PsammosBlocks {
 
         radiationVoid = new RadiationVoid("radiation-void"){{
             category = Category.power;
+        }};
+
+        mirror = new Mirror("mirror"){{
+            requirements(Category.power, with(PsammosItems.silver, 10, PsammosItems.desertGlassShard, 5));
         }};
 
         // Defense
