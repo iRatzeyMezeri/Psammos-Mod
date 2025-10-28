@@ -12,7 +12,7 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 import psammos.*;
-import psammos.type.RadiationType;
+import psammos.type.*;
 
 import static mindustry.Vars.*;
 
@@ -117,24 +117,19 @@ public class RadiationSource extends Block {
         }
 
         @Override
-        public float[] outputRadAmounts() {
-            return new float[]{radAmount, radAmount, radAmount, radAmount};
-        }
-
-        @Override
-        public float[] outputRadFrac() {
-            return new float[]{1f, 1f, 1f, 1f};
-        }
-
-        @Override
-        public RadiationType[] outputRadTypes() {
-            RadiationType[] types = new RadiationType[4];
+        public RadiationStack[] outputRadiation() {
+            RadiationStack[] output = new RadiationStack[4];
             for(int i = 0; i < 4; i++){
                 if(rotation == i){
-                    types[i] = radOutputType;
+                    output[i] = new RadiationStack(radOutputType, radAmount);
                 }
             }
-            return types;
+            return output;
+        }
+
+        @Override
+        public float[] outputRadiationFrac() {
+            return new float[]{1f, 1f, 1f, 1f};
         }
 
         @Override

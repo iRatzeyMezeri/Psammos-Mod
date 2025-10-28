@@ -1,7 +1,6 @@
 package psammos.world.blocks.radiation;
 
 import arc.Core;
-import arc.func.Func;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
@@ -11,11 +10,10 @@ import arc.math.geom.Point2;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
-import mindustry.ui.Bar;
-import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.StaticWall;
 import psammos.graphics.PDraw;
+import psammos.type.RadiationStack;
 import psammos.type.RadiationType;
 
 import static mindustry.Vars.*;
@@ -27,6 +25,11 @@ public class RadiationUtil {
         int x = build.tileX() + Geometry.d4x[rotation] * Mathf.ceil(build.block.size / 2f);
         int y = build.tileY() + Geometry.d4y[rotation] * Mathf.ceil(build.block.size / 2f);
         return new Point2(x, y);
+    }
+
+    public static RadiationStack[] calculateSideRadiation(Building build){
+        //TODO
+        return new RadiationStack[4];
     }
 
     /** Finds the tile radiation hits if the building emits it in the specified direction.
@@ -46,10 +49,9 @@ public class RadiationUtil {
             x += Geometry.d4x(rotation);
             y += Geometry.d4y(rotation);
             dist++;
-        }
-
-        if (dist >= emitter.radBeamRange()){
-            return null;
+            if (dist >= emitter.radBeamRange()){
+                return null;
+            }
         }
         return world.tile(x, y);
     }
@@ -64,17 +66,17 @@ public class RadiationUtil {
         TextureRegion beamEnd = Core.atlas.find("psammos-radiation-beam-end");
 
         for (int rotation = 0; rotation < 4; rotation++){
-            RadiationType type = emitter.outputRadTypes()[rotation];
-            float amountFraction = emitter.outputRadFrac()[rotation];
+            RadiationStack radStack = emitter.outputRadiation()[rotation];
+            float amountFraction = emitter.outputRadiationFrac()[rotation];
 
-            if (type == null || amountFraction == 0){
+            if (radStack == null || radStack.type == null || amountFraction == 0){
                 continue;
             }
 
             Tile target = RadiationUtil.findRadiationTarget(build, rotation);
             float dx = Geometry.d4x[rotation] * tilesize;
             float dy = Geometry.d4y[rotation] * tilesize;
-            Color color = type.color.cpy().a(amountFraction);
+            Color color = radStack.type.color.cpy().a(amountFraction);
             Draw.z(Layer.effect);
 
             if (target != null){

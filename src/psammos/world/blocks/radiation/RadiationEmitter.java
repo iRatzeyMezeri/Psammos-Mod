@@ -1,10 +1,9 @@
 package psammos.world.blocks.radiation;
 
-import psammos.type.RadiationType;
+import psammos.type.RadiationStack;
 
 public interface RadiationEmitter {
-    float[] outputRadAmounts();
-    float[] outputRadFrac();
-    RadiationType[] outputRadTypes();
+    RadiationStack[] outputRadiation();
+    float[] outputRadiationFrac();
     float radBeamRange();
 }
