@@ -18,25 +18,29 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.Styles;
 import mindustry.world.*;
+import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 import psammos.*;
 import psammos.type.*;
+import psammos.world.draw.*;
 
 import static mindustry.Vars.*;
 
 public class RadiationSource extends Block {
 
+    public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawSideDecal(), new DrawRadiationBeams());
+
     float radAmount = 100f;
     int range = 10;
 
     TextureRegion radiationRegion;
-    TextureRegion[] topRegions;
 
     public RadiationSource(String name){
         super(name);
         update = true;
         rotate = true;
         rotateDraw = false;
+        clipSize = range * tilesize * 2;
         solid = true;
         configurable = true;
         saveConfig = true;
@@ -52,10 +56,8 @@ public class RadiationSource extends Block {
     @Override
     public void load() {
         super.load();
+        drawer.load(this);
         radiationRegion = Core.atlas.find(name + "-radiation");
-        topRegions = new TextureRegion[2];
-        topRegions[0] = Core.atlas.find(name + "-top1");
-        topRegions[1] = Core.atlas.find(name + "-top2");
     }
 
     @Override
@@ -66,9 +68,8 @@ public class RadiationSource extends Block {
     }
 
     @Override
-    public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid) {
-        super.drawPlan(plan, list, valid);
-        Draw.rect(Mathf.mod(plan.rotation, 4) > 1 ? topRegions[1] : topRegions[0], plan.drawx(), plan.drawy(), plan.rotation * 90);
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+        drawer.drawPlan(this, plan, list);
     }
 
     @Override
@@ -91,16 +92,19 @@ public class RadiationSource extends Block {
 
         @Override
         public void draw() {
-            super.draw();
-            Draw.rect(Mathf.mod(rotation, 4) > 1 ? topRegions[1] : topRegions[0], x, y, rotation * 90);
+            drawer.draw(this);
 
             if(radOutputType != null){
                 Draw.color(radOutputType.color);
                 Draw.rect(radiationRegion, x, y);
                 Draw.color();
             }
+        }
 
-            RadiationUtil.drawRadiationBeams(this);
+        @Override
+        public void drawLight(){
+            super.drawLight();
+            drawer.drawLight(this);
         }
 
         @Override

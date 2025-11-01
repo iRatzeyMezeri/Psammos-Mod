@@ -11,13 +11,17 @@ import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.world.Block;
+import mindustry.world.draw.*;
 import psammos.PPal;
 import psammos.graphics.PDraw;
 import psammos.type.RadiationStack;
+import psammos.world.draw.*;
 
 import static mindustry.Vars.*;
 
 public class Mirror extends Block {
+
+    public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawRadiationBeams());
 
     public int range = 10;
     public float shadowOffset = -0.25f;
@@ -31,12 +35,13 @@ public class Mirror extends Block {
         update = true;
         rotate = true;
         rotateDraw = false;
+        clipSize = range * tilesize * 2;
         solid = true;
     }
 
     @Override
-    public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid) {
-        super.drawPlan(plan, list, valid);
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+        drawer.drawPlan(this, plan, list);
 
         Draw.alpha(shadowAlpha);
         Draw.rect(topShadowRegion, plan.drawx() + shadowOffset, plan.drawy() + shadowOffset, plan.rotation * 90 + 45f);
@@ -63,6 +68,7 @@ public class Mirror extends Block {
     @Override
     public void load() {
         super.load();
+        drawer.load(this);
         topRegion = Core.atlas.find(name + "-top");
         topShadowRegion = Core.atlas.find(name + "-top-shadow");
     }
@@ -73,7 +79,7 @@ public class Mirror extends Block {
 
         @Override
         public void draw() {
-            super.draw();
+            drawer.draw(this);
 
             Draw.z(Layer.blockOver);
             Draw.alpha(shadowAlpha);
@@ -81,8 +87,12 @@ public class Mirror extends Block {
             Draw.alpha(1);
             PDraw.spinLineSprite(topRegion, x, y, rotdeg() + 45f);
             Draw.reset();
+        }
 
-            RadiationUtil.drawRadiationBeams(this);
+        @Override
+        public void drawLight(){
+            super.drawLight();
+            drawer.drawLight(this);
         }
 
         @Override

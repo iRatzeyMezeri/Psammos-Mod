@@ -43,7 +43,7 @@ public class PDraw {
 
         Drawf.light(x, y, x2, y2);
 
-        Draw.reset();
+        Draw.color();
     }
 
     public static void line(TextureRegion region, float x, float y, Color c, float x2, float y2, Color c2, boolean cap){

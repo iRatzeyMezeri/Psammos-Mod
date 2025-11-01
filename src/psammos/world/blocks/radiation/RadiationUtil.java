@@ -83,44 +83,4 @@ public class RadiationUtil {
         }
         return world.tile(x, y);
     }
-
-    public static void drawRadiationBeams(Building build){
-        //TODO: Maybe make this a drawer?
-        if (!(build instanceof RadiationEmitter)){
-            return;
-        }
-        RadiationEmitter emitter = (RadiationEmitter) build;
-
-        TextureRegion beam = Core.atlas.find("psammos-radiation-beam");
-        TextureRegion beamEnd = Core.atlas.find("psammos-radiation-beam-end");
-
-        for (int rotation = 0; rotation < 4; rotation++){
-            RadiationStack radStack = emitter.outputRadiation()[rotation];
-
-            if (radStack == null || radStack.type == null || radStack.amount == 0){
-                continue;
-            }
-
-            Tile target = RadiationUtil.findRadiationTarget(build, rotation);
-            float dx = Geometry.d4x[rotation] * tilesize;
-            float dy = Geometry.d4y[rotation] * tilesize;
-            Color color = radStack.type.color.cpy();
-            float scale = Mathf.clamp(radStack.amount / 100f) *  0.5f;
-            Draw.z(Layer.effect);
-
-            if (target != null){
-                Draw.color(color);
-                Drawf.laser(beam, beamEnd,
-                        build.x + dx * build.block.size / 2f, build.y + dy * build.block.size / 2f,
-                        target.worldx() - dx / 2f, target.worldy() - dy / 2f,
-                        scale);
-            }else{
-                PDraw.gradientLaser(beam, beamEnd,
-                        build.x + dx * build.block.size / 2f, build.y + dy * build.block.size / 2f, color,
-                        build.x + dx * emitter.radBeamRange() * 1.2f, build.y + dy * emitter.radBeamRange() * 1.2f, Color.clear,
-                        scale);
-            }
-            Draw.reset();
-        }
-    }
 }
