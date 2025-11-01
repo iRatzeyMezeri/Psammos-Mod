@@ -12,6 +12,8 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.world.Block;
 import mindustry.world.draw.*;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 import psammos.PPal;
 import psammos.graphics.PDraw;
 import psammos.type.RadiationStack;
@@ -37,6 +39,13 @@ public class Mirror extends Block {
         rotateDraw = false;
         clipSize = range * tilesize * 2;
         solid = true;
+    }
+
+    @Override
+    public void setStats() {
+        super.setStats();
+
+        stats.add(Stat.range, range, StatUnit.blocks);
     }
 
     @Override

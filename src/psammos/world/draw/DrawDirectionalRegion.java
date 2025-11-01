@@ -10,13 +10,13 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-public class DrawSideDecal extends DrawBlock {
+public class DrawDirectionalRegion extends DrawBlock {
     public TextureRegion top1, top2;
     public int rotOffset = 0;
 
-    public DrawSideDecal(){}
+    public DrawDirectionalRegion(){}
 
-    public DrawSideDecal(int rotOffset){
+    public DrawDirectionalRegion(int rotOffset){
         this.rotOffset = rotOffset;
     }
 

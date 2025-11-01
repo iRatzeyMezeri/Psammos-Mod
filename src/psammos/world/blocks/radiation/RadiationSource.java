@@ -3,15 +3,12 @@ package psammos.world.blocks.radiation;
 import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
-import arc.math.*;
 import arc.math.geom.*;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.ButtonGroup;
 import arc.scene.ui.ImageButton;
 import arc.scene.ui.layout.*;
-import arc.struct.Seq;
 import arc.util.Eachable;
-import arc.util.Log;
 import arc.util.io.*;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.*;
@@ -28,7 +25,7 @@ import static mindustry.Vars.*;
 
 public class RadiationSource extends Block {
 
-    public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawSideDecal(), new DrawRadiationBeams());
+    public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawDirectionalRegion(), new DrawRadiationBeams());
 
     float radAmount = 100f;
     int range = 10;
@@ -132,11 +129,7 @@ public class RadiationSource extends Block {
         @Override
         public RadiationStack[] outputRadiation() {
             RadiationStack[] output = new RadiationStack[4];
-            for(int i = 0; i < 4; i++){
-                if(rotation == i){
-                    output[i] = new RadiationStack(radOutputType, radAmount);
-                }
-            }
+            output[rotation] = new RadiationStack(radOutputType, radAmount);
             return output;
         }
 

@@ -73,7 +73,7 @@ public class PsammosBlocks {
     windTurbine, piezoelectricGenerator, impulseGenerator, liquidFuelBurner, thermoelectricGenerator, heatEngine,
 
     //Radiation
-    radiationSource, radiationVoid, mirror,
+    radiationSource, radiationVoid, focuser, mirror,
 
     //Defense
     osmiumWall, osmiumWallLarge, silverWall, silverWallLarge,
@@ -1653,6 +1653,10 @@ public class PsammosBlocks {
 
         radiationVoid = new RadiationVoid("radiation-void"){{
             category = Category.power;
+        }};
+
+        focuser = new Focuser("focuser"){{
+            requirements(Category.power, with(PsammosItems.silver, 5, PsammosItems.desertGlassShard, 10));
         }};
 
         mirror = new Mirror("mirror"){{
