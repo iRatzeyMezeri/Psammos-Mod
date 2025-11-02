@@ -6,6 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Geometry;
 import arc.struct.Seq;
 import arc.util.Eachable;
+import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -17,6 +18,7 @@ import mindustry.world.meta.StatUnit;
 import psammos.PPal;
 import psammos.graphics.PDraw;
 import psammos.type.RadiationStack;
+import psammos.type.RadiationType;
 import psammos.world.draw.*;
 
 import static mindustry.Vars.*;
@@ -131,6 +133,21 @@ public class Mirror extends Block {
             if (!radiationInputs.contains(build)){
                 radiationInputs.add(build);
             }
+        }
+
+        @Override
+        public boolean acceptsRadiation(RadiationType type, int from) {
+            return true;
+        }
+
+        @Override
+        public float incomingBeamOffset() {
+            return -Vars.tilesize * 0.3f;
+        }
+
+        @Override
+        public float emittedBeamOffset() {
+            return -Vars.tilesize * 0.3f;
         }
     }
 }

@@ -1,19 +1,12 @@
 package psammos.world.blocks.radiation;
 
-import arc.Core;
-import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.struct.Seq;
 import mindustry.gen.Building;
-import mindustry.graphics.Drawf;
-import mindustry.graphics.Layer;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.StaticWall;
-import psammos.graphics.PDraw;
 import psammos.type.RadiationStack;
 
 import static mindustry.Vars.*;
@@ -73,7 +66,9 @@ public class RadiationUtil {
         int dist = 0;
         while (!(world.tile(x, y) == null ||
                 world.tile(x, y).block() instanceof StaticWall ||
-                world.tile(x, y).build instanceof RadiationConsumer)){
+                world.tile(x, y).build instanceof RadiationConsumer consumer &&
+                        emitter.outputRadiation()[rotation] != null &&
+                        consumer.acceptsRadiation(emitter.outputRadiation()[rotation].type, (rotation + 2) % 4))){
             x += Geometry.d4x(rotation);
             y += Geometry.d4y(rotation);
             dist++;

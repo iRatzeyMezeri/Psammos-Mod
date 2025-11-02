@@ -5,4 +5,7 @@ import psammos.type.RadiationStack;
 public interface RadiationEmitter {
     RadiationStack[] outputRadiation();
     float radBeamRange();
+    default float emittedBeamOffset() {
+        return 0;
+    }
 }

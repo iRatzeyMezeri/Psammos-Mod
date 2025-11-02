@@ -40,22 +40,28 @@ public class DrawRadiationBeams extends DrawBlock {
             }
 
             Tile target = RadiationUtil.findRadiationTarget(build, rotation);
-            float dx = Geometry.d4x[rotation] * tilesize;
-            float dy = Geometry.d4y[rotation] * tilesize;
+            float dx = Geometry.d4x[rotation];
+            float dy = Geometry.d4y[rotation];
+            float emittedOffset = build.block.size * tilesize * 0.5f + emitter.emittedBeamOffset();
             Color color = radStack.type.color.cpy();
             float scale = Mathf.clamp(radStack.amount / 100f) *  0.5f;
 
             if (target != null){
+                float incomingOffset = tilesize * 0.5f;
+                if (target.build instanceof RadiationConsumer consumer){
+                    incomingOffset += consumer.incomingBeamOffset();
+                }
                 Draw.color(color);
                 Drawf.laser(beam, beamEnd,
-                        build.x + dx * build.block.size / 2f, build.y + dy * build.block.size / 2f,
-                        target.worldx() - dx / 2f, target.worldy() - dy / 2f,
+                        build.x + dx * emittedOffset, build.y + dy * emittedOffset,
+                        target.worldx() - dx * incomingOffset, target.worldy() - dy * incomingOffset,
                         scale);
                 Draw.color();
             }else{
+                float rangeOffset = emitter.radBeamRange() * tilesize * 1.2f;
                 PDraw.gradientLaser(beam, beamEnd,
-                        build.x + dx * build.block.size / 2f, build.y + dy * build.block.size / 2f, color,
-                        build.x + dx * emitter.radBeamRange() * 1.2f, build.y + dy * emitter.radBeamRange() * 1.2f, color.cpy().a(0),
+                        build.x + dx * emittedOffset, build.y + dy * emittedOffset, color,
+                        build.x + dx * rangeOffset, build.y + dy * rangeOffset, color.cpy().a(0),
                         scale);
             }
         }

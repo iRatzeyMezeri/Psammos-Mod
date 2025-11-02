@@ -14,6 +14,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import psammos.PPal;
 import psammos.type.RadiationStack;
+import psammos.type.RadiationType;
 import psammos.world.draw.DrawRadiationBeams;
 import psammos.world.draw.DrawDirectionalRegion;
 
@@ -107,6 +108,11 @@ public class Focuser extends Block {
             if (!radiationInputs.contains(build)){
                 radiationInputs.add(build);
             }
+        }
+
+        @Override
+        public boolean acceptsRadiation(RadiationType type, int from) {
+            return from == (rotation + 2) % 4;
         }
     }
 }
