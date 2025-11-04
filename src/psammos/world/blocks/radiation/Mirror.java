@@ -31,7 +31,7 @@ public class Mirror extends Block {
     public float shadowOffset = -0.25f;
     public float shadowAlpha = 0.25f;
 
-    TextureRegion topRegion;
+    TextureRegion topRegion1, topRegion2;
     TextureRegion topShadowRegion;
 
     public Mirror(String name) {
@@ -41,6 +41,15 @@ public class Mirror extends Block {
         rotateDraw = false;
         clipSize = range * tilesize * 2;
         solid = true;
+    }
+
+    @Override
+    public void load() {
+        super.load();
+        drawer.load(this);
+        topRegion1 = Core.atlas.find(name + "-top1");
+        topRegion2 = Core.atlas.find(name + "-top2");
+        topShadowRegion = Core.atlas.find(name + "-top-shadow");
     }
 
     @Override
@@ -55,9 +64,13 @@ public class Mirror extends Block {
         drawer.drawPlan(this, plan, list);
 
         Draw.alpha(shadowAlpha);
-        Draw.rect(topShadowRegion, plan.drawx() + shadowOffset, plan.drawy() + shadowOffset, plan.rotation * 90 + 45f);
+        Draw.rect(topShadowRegion, plan.drawx() + shadowOffset, plan.drawy() + shadowOffset, plan.rotation * 90);
         Draw.alpha(1);
-        PDraw.spinLineSprite(topRegion, plan.drawx(), plan.drawy(), plan.rotation * 90 + 45f);
+        if (plan.rotation % 2 == 0) {
+            Draw.rect(topRegion1, plan.drawx(), plan.drawy());
+        }else{
+            Draw.rect(topRegion2, plan.drawx(), plan.drawy());
+        }
     }
 
     @Override
@@ -76,14 +89,6 @@ public class Mirror extends Block {
         }
     }
 
-    @Override
-    public void load() {
-        super.load();
-        drawer.load(this);
-        topRegion = Core.atlas.find(name + "-top");
-        topShadowRegion = Core.atlas.find(name + "-top-shadow");
-    }
-
     public class MirrorBuild extends Building implements RadiationEmitter, RadiationConsumer {
         public Seq<Building> radiationInputs = new Seq<>();
         public RadiationStack[] sideRadiation;
@@ -94,9 +99,13 @@ public class Mirror extends Block {
 
             Draw.z(Layer.blockOver);
             Draw.alpha(shadowAlpha);
-            Draw.rect(topShadowRegion, x + shadowOffset, y + shadowOffset, rotdeg() + 45f);
+            Draw.rect(topShadowRegion, x + shadowOffset, y + shadowOffset, rotdeg());
             Draw.alpha(1);
-            PDraw.spinLineSprite(topRegion, x, y, rotdeg() + 45f);
+            if (rotation % 2 == 0) {
+                Draw.rect(topRegion1, x, y);
+            }else{
+                Draw.rect(topRegion2, x, y);
+            }
             Draw.reset();
         }
 
