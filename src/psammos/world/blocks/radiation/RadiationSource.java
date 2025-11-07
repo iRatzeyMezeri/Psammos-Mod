@@ -107,7 +107,7 @@ public class RadiationSource extends Block {
         @Override
         public void updateTile() {
             super.updateTile();
-            RadiationUtil.handleRadiationEmission(this, rotation);
+            handleRadiationEmission(this, rotation);
         }
 
         @Override

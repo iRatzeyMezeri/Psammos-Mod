@@ -124,9 +124,8 @@ public class Lens extends Block {
         @Override
         public void updateTile() {
             super.updateTile();
-            sideRadiation = RadiationUtil.calculateSideRadiation(this, radiationInputs);
-            radiationInputs.clear();
-            RadiationUtil.handleRadiationEmission(this);
+            sideRadiation = calculateSideRadiation(this, radiationInputs);
+            handleRadiationEmission(this);
         }
 
         @Override

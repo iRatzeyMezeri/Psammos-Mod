@@ -43,7 +43,7 @@ public class DrawRadiationBeams extends DrawBlock {
                 continue;
             }
 
-            Tile target = RadiationUtil.findRadiationTarget(build, rotation);
+            Tile target = emitter.findRadiationTarget(build, rotation);
             float dx = Geometry.d4x[rotation];
             float dy = Geometry.d4y[rotation];
             float emittedOffset = build.block.size * tilesize * 0.5f + emitter.emittedBeamOffset();
