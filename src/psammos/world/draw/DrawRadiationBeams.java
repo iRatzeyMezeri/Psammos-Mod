@@ -18,6 +18,10 @@ import static mindustry.Vars.tilesize;
 public class DrawRadiationBeams extends DrawBlock {
     public TextureRegion beam, beamEnd;
 
+    public float minRadiation = 5;
+    public float maxRadiation = 50;
+    public float baseBeamScale = 0.5f;
+
     @Override
     public void load(Block block) {
         super.load(block);
@@ -44,7 +48,7 @@ public class DrawRadiationBeams extends DrawBlock {
             float dy = Geometry.d4y[rotation];
             float emittedOffset = build.block.size * tilesize * 0.5f + emitter.emittedBeamOffset();
             Color color = radStack.type.color.cpy();
-            float scale = Mathf.clamp(radStack.amount / 100f) *  0.5f;
+            float scale = Mathf.clamp(Math.max(radStack.amount, minRadiation) / maxRadiation) * baseBeamScale;
 
             if (target != null){
                 float incomingOffset = tilesize * 0.5f;

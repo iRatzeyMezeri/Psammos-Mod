@@ -11,29 +11,39 @@ import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
 public class DrawDirectionalRegion extends DrawBlock {
-    public TextureRegion top1, top2;
+    public TextureRegion region1, region2;
     public int rotOffset = 0;
+    public String suffix = "-top";
 
     public DrawDirectionalRegion(){}
+
+    public DrawDirectionalRegion(String suffix){
+        this.suffix = suffix;
+    }
 
     public DrawDirectionalRegion(int rotOffset){
         this.rotOffset = rotOffset;
     }
 
+    public DrawDirectionalRegion(String suffix, int rotOffset){
+        this.suffix = suffix;
+        this.rotOffset = rotOffset;
+    }
+
     @Override
     public void load(Block block){
-        top1 = Core.atlas.find(block.name + "-top1");
-        top2 = Core.atlas.find(block.name + "-top2");
+        region1 = Core.atlas.find(block.name + suffix + "1");
+        region2 = Core.atlas.find(block.name + suffix + "2");
     }
 
     @Override
     public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
-        Draw.rect(Mathf.mod((plan.rotation + rotOffset), 4) > 1 ? top2 : top1, plan.drawx(), plan.drawy(), (plan.rotation + rotOffset) * 90);
+        Draw.rect(Mathf.mod((plan.rotation + rotOffset), 4) > 1 ? region2 : region1, plan.drawx(), plan.drawy(), (plan.rotation + rotOffset) * 90);
     }
 
     @Override
     public void draw(Building build) {
         float rotdeg = (build.rotation + rotOffset) * 90;
-        Draw.rect(Mathf.mod((build.rotation + rotOffset), 4) > 1 ? top2 : top1, build.x, build.y, rotdeg);
+        Draw.rect(Mathf.mod((build.rotation + rotOffset), 4) > 1 ? region2 : region1, build.x, build.y, rotdeg);
     }
 }

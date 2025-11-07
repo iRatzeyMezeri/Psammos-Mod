@@ -1,5 +1,6 @@
 package psammos.world.blocks.radiation;
 
+import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Geometry;
 import arc.struct.Seq;
 import arc.util.Eachable;
@@ -112,7 +113,7 @@ public class Focuser extends Block {
 
         @Override
         public boolean acceptsRadiation(RadiationType type, int from) {
-            return from == (rotation + 2) % 4;
+            return from % 2 == rotation % 2;
         }
     }
 }

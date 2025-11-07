@@ -1,39 +1,35 @@
 package psammos.world.blocks.radiation;
 
-import arc.Core;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.TextureRegion;
+import arc.*;
+import arc.graphics.g2d.*;
 import arc.math.geom.Geometry;
-import arc.struct.Seq;
-import arc.util.Eachable;
-import mindustry.Vars;
-import mindustry.entities.units.BuildPlan;
-import mindustry.gen.Building;
-import mindustry.graphics.Drawf;
-import mindustry.graphics.Layer;
-import mindustry.world.Block;
+import arc.struct.*;
+import arc.util.*;
+import mindustry.entities.units.*;
+import mindustry.gen.*;
+import mindustry.graphics.*;
+import mindustry.world.*;
 import mindustry.world.draw.*;
-import mindustry.world.meta.Stat;
-import mindustry.world.meta.StatUnit;
+import mindustry.world.meta.*;
 import psammos.PPal;
-import psammos.type.RadiationStack;
-import psammos.type.RadiationType;
+import psammos.type.*;
 import psammos.world.draw.*;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
-public class Mirror extends Block {
+public class Lens extends Block {
 
-    public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawRadiationBeams());
+    public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawDirectionalRegion("-arrow"), new DrawRadiationBeams());
 
     public int range = 10;
     public float shadowOffset = -0.25f;
     public float shadowAlpha = 0.25f;
+    public boolean concave = false;
 
-    TextureRegion topRegion1, topRegion2;
+    TextureRegion topRegion;
     TextureRegion topShadowRegion;
 
-    public Mirror(String name) {
+    public Lens(String name) {
         super(name);
         update = true;
         rotate = true;
@@ -46,8 +42,7 @@ public class Mirror extends Block {
     public void load() {
         super.load();
         drawer.load(this);
-        topRegion1 = Core.atlas.find(name + "-top1");
-        topRegion2 = Core.atlas.find(name + "-top2");
+        topRegion = Core.atlas.find(name + "-top");
         topShadowRegion = Core.atlas.find(name + "-top-shadow");
     }
 
@@ -60,7 +55,7 @@ public class Mirror extends Block {
 
     @Override
     protected TextureRegion[] icons() {
-        return new TextureRegion[]{region, topRegion2};
+        return new TextureRegion[]{region, topRegion};
     }
 
     @Override
@@ -76,17 +71,19 @@ public class Mirror extends Block {
         Draw.rect(topShadowRegion, plan.drawx() + shadowOffset, plan.drawy() + shadowOffset, plan.rotation * 90);
         Draw.alpha(1);
         if (plan.rotation % 2 == 0) {
-            Draw.rect(topRegion1, plan.drawx(), plan.drawy());
+            Draw.rect(topRegion, plan.drawx(), plan.drawy());
         }else{
-            Draw.rect(topRegion2, plan.drawx(), plan.drawy());
+            Draw.rect(topRegion, plan.drawx(), plan.drawy(), 90);
         }
     }
 
     @Override
     public void drawPlace(int x, int y, int rotation, boolean valid) {
         super.drawPlace(x, y, rotation, valid);
+        int maxLen = range + size/2;
         for(int i = 0; i < 4; i++){
-            int maxLen = range + size/2;
+            if(concave ? i == (rotation + 2) % 4 : i != rotation) continue;
+
             int gx = Geometry.d4x[i];
             int gy = Geometry.d4y[i];
             Drawf.dashLine(PPal.desertGlass,
@@ -98,7 +95,7 @@ public class Mirror extends Block {
         }
     }
 
-    public class MirrorBuild extends Building implements RadiationEmitter, RadiationConsumer {
+    public class LensBuild extends Building implements RadiationEmitter, RadiationConsumer {
         public Seq<Building> radiationInputs = new Seq<>();
         public RadiationStack[] sideRadiation;
 
@@ -111,9 +108,9 @@ public class Mirror extends Block {
             Draw.rect(topShadowRegion, x + shadowOffset, y + shadowOffset, rotdeg());
             Draw.alpha(1);
             if (rotation % 2 == 0) {
-                Draw.rect(topRegion1, x, y);
+                Draw.rect(topRegion, x, y);
             }else{
-                Draw.rect(topRegion2, x, y);
+                Draw.rect(topRegion, x, y, 90);
             }
             Draw.reset();
         }
@@ -134,11 +131,29 @@ public class Mirror extends Block {
 
         @Override
         public RadiationStack[] outputRadiation() {
-            if (rotation % 2 == 0){
-                return new RadiationStack[]{sideRadiation[3], sideRadiation[2], sideRadiation[1], sideRadiation[0]};
+            RadiationStack radiation = null;
+            RadiationStack[] output = new RadiationStack[4];
+            if (!concave){
+                for (int i = 0; i < 4; i++){
+                    if (i != rotation && sideRadiation[i] != null){
+                        if (radiation == null){
+                            radiation = new RadiationStack(sideRadiation[i].type, 0);
+                        }
+                        if (radiation.type == sideRadiation[i].type){
+                            radiation.amount += sideRadiation[i].amount;
+                        }
+                    }
+                }
+                output[rotation] = radiation;
             }else{
-                return new RadiationStack[]{sideRadiation[1], sideRadiation[0], sideRadiation[3], sideRadiation[2]};
+                radiation = sideRadiation[(rotation + 2) % 4];
+                if (radiation != null) {
+                    output[rotation] = new RadiationStack(radiation.type, radiation.amount / 3f);
+                    output[(rotation + 1) % 4] = new RadiationStack(radiation.type, radiation.amount / 3f);
+                    output[(rotation + 3) % 4] = new RadiationStack(radiation.type, radiation.amount / 3f);
+                }
             }
+            return output;
         }
 
         @Override
@@ -156,16 +171,6 @@ public class Mirror extends Block {
         @Override
         public boolean acceptsRadiation(RadiationType type, int from) {
             return true;
-        }
-
-        @Override
-        public float incomingBeamOffset() {
-            return -Vars.tilesize * 0.3f;
-        }
-
-        @Override
-        public float emittedBeamOffset() {
-            return -Vars.tilesize * 0.3f;
         }
     }
 }

@@ -73,7 +73,7 @@ public class PsammosBlocks {
     windTurbine, piezoelectricGenerator, impulseGenerator, liquidFuelBurner, thermoelectricGenerator, heatEngine,
 
     //Radiation
-    radiationSource, radiationVoid, focuser, mirror,
+    radiationSource, radiationVoid, focuser, mirror, convexLens, concaveLens,
 
     //Defense
     osmiumWall, osmiumWallLarge, silverWall, silverWallLarge,
@@ -1656,11 +1656,21 @@ public class PsammosBlocks {
         }};
 
         focuser = new Focuser("focuser"){{
-            requirements(Category.power, with(PsammosItems.silver, 5, PsammosItems.desertGlassShard, 10));
+            requirements(Category.power, with(PsammosItems.silver, 5, PsammosItems.desertGlassShard, 3));
         }};
 
         mirror = new Mirror("mirror"){{
-            requirements(Category.power, with(PsammosItems.silver, 10, PsammosItems.desertGlassShard, 5));
+            requirements(Category.power, with(PsammosItems.silver, 7, PsammosItems.desertGlassShard, 5));
+        }};
+
+        convexLens = new Lens("convex-lens"){{
+            requirements(Category.power, with(PsammosItems.osmium, 5, PsammosItems.silver, 10, PsammosItems.desertGlassShard, 20));
+            concave = false;
+        }};
+
+        concaveLens = new Lens("concave-lens"){{
+            requirements(Category.power, with(PsammosItems.osmium, 5, PsammosItems.silver, 10, PsammosItems.desertGlassShard, 20));
+            concave = true;
         }};
 
         // Defense
