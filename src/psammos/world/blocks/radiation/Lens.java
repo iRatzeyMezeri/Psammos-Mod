@@ -1,6 +1,7 @@
 package psammos.world.blocks.radiation;
 
 import arc.*;
+import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.geom.Geometry;
 import arc.struct.*;
@@ -8,6 +9,7 @@ import arc.util.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.ui.Bar;
 import mindustry.world.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
@@ -21,6 +23,7 @@ public class Lens extends Block {
 
     public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawDirectionalRegion("-arrow"), new DrawRadiationBeams());
 
+    float visualMaxRadiation = 50;
     public int range = 10;
     public float shadowOffset = -0.25f;
     public float shadowAlpha = 0.25f;
@@ -51,6 +54,16 @@ public class Lens extends Block {
         super.setStats();
 
         stats.add(Stat.range, range, StatUnit.blocks);
+    }
+
+    @Override
+    public void setBars() {
+        super.setBars();
+        addBar("psammos-radiation", (LensBuild b) -> new Bar(
+                () -> b.barRad() == null ? Core.bundle.get("bar.psammos-radiation") : Core.bundle.format("bar.psammos-radiation-amount", b.barRad().type.localizedName(), b.barRad().amount),
+                () -> b.barRad() == null ? Color.clear : b.barRad().type.color,
+                () -> b.barRad() == null ?  0f : b.barRad().amount / visualMaxRadiation
+        ));
     }
 
     @Override
@@ -98,6 +111,24 @@ public class Lens extends Block {
     public class LensBuild extends Building implements RadiationEmitter, RadiationConsumer {
         public Seq<Building> radiationInputs = new Seq<>();
         public RadiationStack[] sideRadiation;
+
+        public RadiationStack barRad(){
+            RadiationStack radiation = null;
+            if (!concave){
+                for (int i = 0; i < 4; i++){
+                    if (i != rotation && sideRadiation[i] != null){
+                        if (radiation == null){
+                            radiation = new RadiationStack(sideRadiation[i].type, 0);
+                        }
+                        if (radiation.type == sideRadiation[i].type){
+                            radiation.amount += sideRadiation[i].amount;
+                        }
+                    }
+                }
+                return radiation;
+            }
+            return sideRadiation[(rotation + 2) % 4];
+        }
 
         @Override
         public void draw() {

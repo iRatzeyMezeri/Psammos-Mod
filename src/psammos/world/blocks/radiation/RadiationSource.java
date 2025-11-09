@@ -13,6 +13,7 @@ import arc.util.io.*;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.world.*;
 import mindustry.world.draw.*;
@@ -62,6 +63,16 @@ public class RadiationSource extends Block {
         super.setStats();
 
         stats.add(Stat.range, range, StatUnit.blocks);
+    }
+
+    @Override
+    public void setBars() {
+        super.setBars();
+        addBar("psammos-radiation", (RadiationSourceBuild b) -> new Bar(
+                () -> b.radOutputType == null ? Core.bundle.get("bar.psammos-radiation") : Core.bundle.format("bar.psammos-radiation-amount", b.radOutputType.localizedName(), radAmount),
+                () -> b.radOutputType == null ? Color.clear : b.radOutputType.color,
+                () -> b.radOutputType == null ? 0f : 1f
+        ));
     }
 
     @Override
@@ -129,7 +140,9 @@ public class RadiationSource extends Block {
         @Override
         public RadiationStack[] outputRadiation() {
             RadiationStack[] output = new RadiationStack[4];
-            output[rotation] = new RadiationStack(radOutputType, radAmount);
+            if (radOutputType != null) {
+                output[rotation] = new RadiationStack(radOutputType, radAmount);
+            }
             return output;
         }
 

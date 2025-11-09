@@ -1,12 +1,14 @@
 package psammos.world.blocks.radiation;
 
-import arc.graphics.g2d.TextureRegion;
+import arc.Core;
+import arc.graphics.Color;
 import arc.math.geom.Geometry;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
+import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
@@ -25,6 +27,7 @@ public class Focuser extends Block {
 
     public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawDirectionalRegion(), new DrawRadiationBeams());
 
+    float visualMaxRadiation = 50;
     int range = 10;
 
     public Focuser(String name) {
@@ -50,6 +53,16 @@ public class Focuser extends Block {
     }
 
     @Override
+    public void setBars() {
+        super.setBars();
+        addBar("psammos-radiation", (FocuserBuild b) -> new Bar(
+                () -> b.barRad() == null ? Core.bundle.get("bar.psammos-radiation") : Core.bundle.format("bar.psammos-radiation-amount", b.barRad().type.localizedName(), b.barRad().amount),
+                () -> b.barRad() == null ? Color.clear : b.barRad().type.color,
+                () -> b.barRad() == null ?  0f : b.barRad().amount / visualMaxRadiation
+        ));
+    }
+
+    @Override
     public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
         drawer.drawPlan(this, plan, list);
     }
@@ -72,6 +85,10 @@ public class Focuser extends Block {
     public class FocuserBuild extends Building implements RadiationEmitter, RadiationConsumer {
         public Seq<Building> radiationInputs = new Seq<>();
         public RadiationStack[] sideRadiation;
+
+        public RadiationStack barRad(){
+            return sideRadiation[(rotation + 2) % 4];
+        }
 
         @Override
         public void draw() {
