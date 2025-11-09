@@ -1,0 +1,43 @@
+package psammos.world.meta;
+
+import arc.graphics.*;
+import arc.scene.ui.*;
+import arc.scene.ui.layout.*;
+import arc.util.*;
+import mindustry.ui.*;
+import psammos.type.*;
+import mindustry.world.meta.*;
+
+import static mindustry.Vars.iconMed;
+
+public class PsammosStats {
+    public static StatValue radiations(RadiationStack... stacks){
+        return table -> {
+            for(RadiationStack stack : stacks){
+                table.add(displayRadiation(stack)).padRight(5);
+            }
+        };
+    }
+
+    public static Table displayRadiation(RadiationStack stack){
+        Table t = new Table();
+
+        t.add(new Stack(){{
+            add(new Image(stack.type.icon()).setScaling(Scaling.fit));
+
+            if(stack.amount != 0){
+                Table t = new Table().left().bottom();
+                t.add(Strings.autoFixed(stack.amount, 2)).style(Styles.outlineLabel);
+                add(t);
+            }
+        }}).size(iconMed).padRight(3  + (stack.amount != 0 ? (Strings.autoFixed(stack.amount, 2).length() - 1) * 10 : 0));
+
+        if(stack.amount != 0){
+            t.add(StatUnit.perSecond.localized()).padLeft(2).padRight(5).color(Color.lightGray).style(Styles.outlineLabel);
+        }
+
+        t.add(stack.type.localizedName());
+
+        return t;
+    }
+}

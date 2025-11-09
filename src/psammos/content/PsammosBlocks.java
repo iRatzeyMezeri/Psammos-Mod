@@ -35,6 +35,7 @@ import mindustry.world.meta.*;
 import psammos.*;
 import psammos.ai.*;
 import psammos.entities.patterns.*;
+import psammos.type.RadiationType;
 import psammos.world.blocks.defense.*;
 import psammos.world.blocks.distribution.*;
 import psammos.world.blocks.environment.*;
@@ -73,7 +74,7 @@ public class PsammosBlocks {
     windTurbine, piezoelectricGenerator, impulseGenerator, liquidFuelBurner, thermoelectricGenerator, heatEngine,
 
     //Radiation
-    radiationSource, radiationVoid, focuser, mirror, convexLens, concaveLens,
+    radiationSource, radiationVoid, focuser, mirror, convexLens, concaveLens, solarCollector,
 
     //Defense
     osmiumWall, osmiumWallLarge, silverWall, silverWallLarge,
@@ -1671,6 +1672,13 @@ public class PsammosBlocks {
         concaveLens = new Lens("concave-lens"){{
             requirements(Category.power, with(PsammosItems.osmium, 5, PsammosItems.silver, 10, PsammosItems.desertGlassShard, 20));
             concave = true;
+        }};
+
+        solarCollector = new SolarCollector("solar-collector") {{
+            requirements(Category.power, with(PsammosItems.refinedMetal, 10, PsammosItems.silver, 30, PsammosItems.desertGlassShard, 30));
+            size = 3;
+            radOutputAmount = 3f;
+            radOutputType = RadiationType.light;
         }};
 
         // Defense

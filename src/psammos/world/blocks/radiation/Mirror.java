@@ -28,7 +28,7 @@ public class Mirror extends Block {
 
     public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawRadiationBeams());
 
-    float visualMaxRadiation = 50;
+    public float visualMaxRadiation = 50;
     public int range = 10;
     public float shadowOffset = -0.25f;
     public float shadowAlpha = 0.25f;

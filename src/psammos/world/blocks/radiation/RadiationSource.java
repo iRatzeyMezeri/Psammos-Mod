@@ -28,8 +28,8 @@ public class RadiationSource extends Block {
 
     public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawDirectionalRegion(), new DrawRadiationBeams());
 
-    float radAmount = 100f;
-    int range = 10;
+    public float radOutputAmount = 1000f;
+    public int range = 10;
 
     TextureRegion radiationRegion;
 
@@ -69,7 +69,7 @@ public class RadiationSource extends Block {
     public void setBars() {
         super.setBars();
         addBar("psammos-radiation", (RadiationSourceBuild b) -> new Bar(
-                () -> b.radOutputType == null ? Core.bundle.get("bar.psammos-radiation") : Core.bundle.format("bar.psammos-radiation-amount", b.radOutputType.localizedName(), radAmount),
+                () -> b.radOutputType == null ? Core.bundle.get("bar.psammos-radiation") : Core.bundle.format("bar.psammos-radiation-amount", b.radOutputType.localizedName(), radOutputAmount),
                 () -> b.radOutputType == null ? Color.clear : b.radOutputType.color,
                 () -> b.radOutputType == null ? 0f : 1f
         ));
@@ -141,7 +141,7 @@ public class RadiationSource extends Block {
         public RadiationStack[] outputRadiation() {
             RadiationStack[] output = new RadiationStack[4];
             if (radOutputType != null) {
-                output[rotation] = new RadiationStack(radOutputType, radAmount);
+                output[rotation] = new RadiationStack(radOutputType, radOutputAmount);
             }
             return output;
         }

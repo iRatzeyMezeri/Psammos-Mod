@@ -23,7 +23,7 @@ public class Lens extends Block {
 
     public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawDirectionalRegion("-arrow"), new DrawRadiationBeams());
 
-    float visualMaxRadiation = 50;
+    public float visualMaxRadiation = 50;
     public int range = 10;
     public float shadowOffset = -0.25f;
     public float shadowAlpha = 0.25f;

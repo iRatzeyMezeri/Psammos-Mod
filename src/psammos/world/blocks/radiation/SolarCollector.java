@@ -2,35 +2,35 @@ package psammos.world.blocks.radiation;
 
 import arc.Core;
 import arc.graphics.Color;
+import arc.math.Mathf;
 import arc.math.geom.Geometry;
-import arc.struct.Seq;
 import arc.util.Eachable;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.ui.Bar;
-import mindustry.world.Block;
-import mindustry.world.draw.DrawBlock;
-import mindustry.world.draw.DrawDefault;
-import mindustry.world.draw.DrawMulti;
+import mindustry.world.*;
+import mindustry.world.draw.*;
+import mindustry.world.meta.Attribute;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import psammos.PPal;
-import psammos.type.RadiationStack;
-import psammos.type.RadiationType;
-import psammos.world.draw.DrawRadiationBeams;
-import psammos.world.draw.DrawDirectionalRegion;
+import psammos.type.*;
+import psammos.world.draw.*;
+import psammos.world.meta.PsammosStats;
 
+import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 
-public class Focuser extends Block {
+public class SolarCollector extends Block {
 
     public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawDirectionalRegion(), new DrawRadiationBeams());
 
-    public float visualMaxRadiation = 50;
+    public float radOutputAmount = 10f;
+    public RadiationType radOutputType = RadiationType.light;
     public int range = 10;
 
-    public Focuser(String name) {
+    public SolarCollector(String name) {
         super(name);
         update = true;
         rotate = true;
@@ -50,15 +50,16 @@ public class Focuser extends Block {
         super.setStats();
 
         stats.add(Stat.range, range, StatUnit.blocks);
+        stats.add(Stat.output, PsammosStats.radiations(new RadiationStack(radOutputType, radOutputAmount)));
     }
 
     @Override
     public void setBars() {
         super.setBars();
-        addBar("psammos-radiation", (FocuserBuild b) -> new Bar(
-                () -> b.barRad() == null ? Core.bundle.get("bar.psammos-radiation") : Core.bundle.format("bar.psammos-radiation-amount", b.barRad().type.localizedName(), b.barRad().amount),
-                () -> b.barRad() == null ? Color.clear : b.barRad().type.color,
-                () -> b.barRad() == null ?  0f : b.barRad().amount / visualMaxRadiation
+        addBar("psammos-radiation", (SolarCollectorBuild b) -> new Bar(
+                () -> Core.bundle.format("bar.psammos-radiation-amount", radOutputType.localizedName(), radOutputAmount * b.efficiency),
+                () -> radOutputType.color,
+                () -> b.efficiency
         ));
     }
 
@@ -82,13 +83,7 @@ public class Focuser extends Block {
         );
     }
 
-    public class FocuserBuild extends Building implements RadiationEmitter, RadiationConsumer {
-        public Seq<Building> radiationInputs = new Seq<>();
-        public RadiationStack[] sideRadiation;
-
-        public RadiationStack barRad(){
-            return sideRadiation[(rotation + 2) % 4];
-        }
+    public class SolarCollectorBuild extends Building implements RadiationEmitter {
 
         @Override
         public void draw() {
@@ -104,32 +99,26 @@ public class Focuser extends Block {
         @Override
         public void updateTile() {
             super.updateTile();
-            sideRadiation = calculateSideRadiation(this, radiationInputs);
+            efficiency = enabled ?
+                    state.rules.solarMultiplier * Mathf.maxZero(Attribute.light.env() +
+                            (state.rules.lighting ?
+                                    1f - state.rules.ambientLight.a :
+                                    1f
+                            )) : 0f;
+
             handleRadiationEmission(this);
         }
 
         @Override
         public RadiationStack[] outputRadiation() {
             RadiationStack[] output = new RadiationStack[4];
-            output[rotation] = sideRadiation[(rotation + 2) % 4];
+            output[rotation] = new RadiationStack(radOutputType, radOutputAmount * efficiency);
             return output;
         }
 
         @Override
         public float radBeamRange() {
             return range;
-        }
-
-        @Override
-        public void addRadiationInput(Building build) {
-            if (!radiationInputs.contains(build)){
-                radiationInputs.add(build);
-            }
-        }
-
-        @Override
-        public boolean acceptsRadiation(RadiationType type, int from) {
-            return from % 2 == rotation % 2;
         }
     }
 }
