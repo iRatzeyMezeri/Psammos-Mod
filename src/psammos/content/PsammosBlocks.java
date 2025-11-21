@@ -35,6 +35,7 @@ import mindustry.world.meta.*;
 import psammos.*;
 import psammos.ai.*;
 import psammos.entities.patterns.*;
+import psammos.type.RadiationStack;
 import psammos.type.RadiationType;
 import psammos.world.blocks.defense.*;
 import psammos.world.blocks.distribution.*;
@@ -56,32 +57,33 @@ import static mindustry.type.ItemStack.*;
 
 public class PsammosBlocks {
     public static Block
-    //Turrets
+    // Turrets
     cross, disseminate, hurl, confine, influence, gunslinger, spray, seize, discharge, burst, overflow, dawn, burden,
 
-    //Drills/Production
+    // Drills/Production
     osmiumDrill, detonationDrill, excavatorDrill, quarryDrill, seismicBomb, ammoniaBomb, crystalSampler,
 
-    //Distribution
+    // Distribution
     heatproofConveyor, platedConveyor, heatproofJunction, heatproofRouter,
     heatproofTunnelConveyor, heatproofOverflowGate, heatproofUnderflowGate,
 
-    //Liquid
+    // Liquid
     heatproofPump, pipe, vacuumPipe, pipeJunction, pipeRouter, heatproofLiquidContainer, heatproofLiquidTank, tunnelPipe, overflowPipe, underflowPipe,
 
-    //Power
+    // Power
     electricPole, electricDistributor, led, accumulator,
     windTurbine, piezoelectricGenerator, impulseGenerator, liquidFuelBurner, thermoelectricGenerator, heatEngine,
+    photovoltaicCell,
 
-    //Radiation
+    // Radiation
     radiationSource, radiationVoid, focuser, mirror, convexLens, concaveLens, solarCollector,
 
-    //Defense
+    // Defense
     osmiumWall, osmiumWallLarge, silverWall, silverWallLarge,
     refinedMetalWall, refinedMetalWallLarge, gate, gateLarge,
     floatingWall, floatingWallLarge, memoryWall, memoryWallLarge,
 
-    //Crafting
+    // Crafting
     sieve, filter, siliconSynthesizer, siliconSynthesisChamber,
     centrifuge, purifier, thermolysisChamber, refinery,
     blastManufacturer, oilDistillationTower, atmosphericSeparator, heatExchanger,
@@ -89,19 +91,19 @@ public class PsammosBlocks {
     heatPumpRouter, aerogelPressurizer, steamReformer, ammoniaCompressor,
     memoryAlloyCrucible, obliterator,
 
-    //Units/Payload
+    // Units/Payload
     specialistUnitForge, assaultUnitForge, supportUnitForge, scoutUnitForge, frontlineUnitForge,
     specialistUnitRecombiner, assaultUnitRecombiner, supportUnitRecombiner, scoutUnitRecombiner, frontlineUnitRecombiner,
     overclockTower, repairDroneAssembler,
     heatproofPayloadConveyor, heatproofPayloadRouter, heatproofPayloadGate,
 
-    //Effect/Storage
+    // Effect/Storage
     coreDust, coreDune, heatproofContainer, heatproofVault, heatproofUnloader, healingProjector,
 
-    //Logic
+    // Logic
     heatproofMessage,
 
-        //Environment
+        // Environment
     //Ores
     osmiumOre, silverOre, peatOre,
     //Liquids
@@ -120,7 +122,7 @@ public class PsammosBlocks {
     ashPit,
     crystalQuartz, crystalDesertGlass,
 
-    //Legacy
+    // Legacy
     influenceOld, liquidFuelBurnerOld;
 
     public static void load(){
@@ -1501,8 +1503,6 @@ public class PsammosBlocks {
 
             size = 2;
             powerProduction = 1/3f;
-            hasPower = true;
-            outputsPower = true;
             squareSprite = false;
             range = 6;
         }};
@@ -1512,8 +1512,6 @@ public class PsammosBlocks {
 
             size = 2;
             powerProduction = 3;
-            hasPower = true;
-            outputsPower = true;
             squareSprite = false;
 
             drawer = new DrawMulti(
@@ -1534,8 +1532,6 @@ public class PsammosBlocks {
 
             size = 2;
             powerProduction = 250/60f;
-            hasPower = true;
-            outputsPower = true;
             squareSprite = true;
             itemDuration = 120f;
             drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion());
@@ -1549,8 +1545,6 @@ public class PsammosBlocks {
 
             size = 3;
             powerProduction = 21;
-            hasPower = true;
-            outputsPower = true;
             squareSprite = false;
 
             drawer = new DrawMulti(
@@ -1607,8 +1601,6 @@ public class PsammosBlocks {
 
             size = 4;
             powerProduction = 35;
-            hasPower = true;
-            outputsPower = true;
             squareSprite = false;
             effect = Fx.none;
             flashColor2 = Color.valueOf("d194f3");
@@ -1645,6 +1637,25 @@ public class PsammosBlocks {
                 addBar("overheat", (entity) -> new Bar("bar.psammos-overheat", Pal.redderDust, () -> ((VariableReactorBuild)entity).instability));
             }
         };
+
+        photovoltaicCell = new RadiationPowerGenerator("photovoltaic-cell"){{
+            requirements(Category.power, with(PsammosItems.refinedMetal, 30, PsammosItems.silver, 10, Items.silicon, 20, PsammosItems.desertGlassShard, 25));
+
+            size = 2;
+            powerProduction = 2f;
+            squareSprite = false;
+
+            radiationRequirements = Seq.with(new RadiationStack(RadiationType.light, 12f));
+
+            drawer = new DrawMulti(
+                    new DrawDefault(),
+                    new DrawGlowRegion(){{
+                        alpha = 0.6f;
+                        glowScale = 5f;
+                        color = Pal.accent;
+                    }}
+            );
+        }};
 
         //Radiation
 

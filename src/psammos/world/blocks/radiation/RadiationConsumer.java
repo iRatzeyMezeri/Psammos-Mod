@@ -1,6 +1,6 @@
 package psammos.world.blocks.radiation;
 
-import arc.struct.Seq;
+import arc.struct.*;
 import mindustry.gen.Building;
 import psammos.type.RadiationStack;
 import psammos.type.RadiationType;
@@ -21,15 +21,41 @@ public interface RadiationConsumer {
             int rotation = build.relativeTo(b);
 
             if (emitter.outputRadiation()[(rotation + 2) % 4] != null){
+                RadiationType type = emitter.outputRadiation()[(rotation + 2) % 4].type;
+                float amount = emitter.outputRadiation()[(rotation + 2) % 4].amount;
+
                 if (sideRadiation[rotation] == null){
-                    sideRadiation[rotation] = new RadiationStack(emitter.outputRadiation()[(rotation + 2) % 4].type, 0);
+                    sideRadiation[rotation] = new RadiationStack(type, 0);
                 }
-                if (sideRadiation[rotation].type == emitter.outputRadiation()[(rotation + 2) % 4].type){
-                    sideRadiation[rotation].amount += emitter.outputRadiation()[(rotation + 2) % 4].amount;
+                if (sideRadiation[rotation].type == type){
+                    sideRadiation[rotation].amount += amount;
                 }
             }
         });
         inputs.clear();
         return sideRadiation;
+    }
+
+    default ArrayMap<RadiationType, Float> calculateRadiationTypes(Building build, Seq<Building> inputs){
+        ArrayMap<RadiationType, Float> radiations = new ArrayMap<>();
+        inputs.forEach(b -> {
+            if (!(b instanceof RadiationEmitter emitter) || b.dead){
+                return;
+            }
+            int rotation = build.relativeTo(b);
+
+            if (emitter.outputRadiation()[(rotation + 2) % 4] != null){
+                RadiationType type = emitter.outputRadiation()[(rotation + 2) % 4].type;
+                float amount = emitter.outputRadiation()[(rotation + 2) % 4].amount;
+
+                if (!radiations.containsKey(type)){
+                    radiations.put(type, amount);
+                }else{
+                    radiations.setValue(radiations.indexOfKey(type), radiations.get(type) + amount);
+                }
+            }
+        });
+        inputs.clear();
+        return radiations;
     }
 }

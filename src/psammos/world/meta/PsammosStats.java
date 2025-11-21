@@ -3,6 +3,7 @@ package psammos.world.meta;
 import arc.graphics.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import arc.struct.*;
 import arc.util.*;
 import mindustry.ui.*;
 import psammos.type.*;
@@ -11,6 +12,14 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.iconMed;
 
 public class PsammosStats {
+    public static StatValue radiations(Seq<RadiationStack> stacks){
+        return table -> {
+            stacks.forEach(stack -> {
+                table.add(displayRadiation(stack)).padRight(5);
+            });
+        };
+    }
+
     public static StatValue radiations(RadiationStack... stacks){
         return table -> {
             for(RadiationStack stack : stacks){
