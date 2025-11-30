@@ -3,7 +3,17 @@ package psammos.content;
 import arc.struct.*;
 
 import static mindustry.content.TechTree.*;
-import static psammos.content.PsammosBlocks.*;
+import static psammos.content.blocks.PsammosTurrets.*;
+import static psammos.content.blocks.PsammosProductionBlocks.*;
+import static psammos.content.blocks.PsammosDistributionBlocks.*;
+import static psammos.content.blocks.PsammosLiquidBlocks.*;
+import static psammos.content.blocks.PsammosPowerBlocks.*;
+import static psammos.content.blocks.PsammosRadiationBlocks.*;
+import static psammos.content.blocks.PsammosWalls.*;
+import static psammos.content.blocks.PsammosCraftingBlocks.*;
+import static psammos.content.blocks.PsammosPayloadBlocks.*;
+import static psammos.content.blocks.PsammosEffectBlocks.*;
+import static psammos.content.blocks.PsammosLogicBlocks.*;
 import static psammos.content.PsammosItems.*;
 import static psammos.content.PsammosLiquids.*;
 import static psammos.content.PsammosSectors.*;
@@ -14,7 +24,7 @@ import static mindustry.game.Objectives.*;
 
 public class PsammosTechTree {
     public static void load(){
-        PsammosPlanets.psammos.techTree = nodeRoot("@planet.psammos-psammos.name", PsammosBlocks.coreDust, false, () ->{
+        PsammosPlanets.psammos.techTree = nodeRoot("@planet.psammos-psammos.name", coreDust, false, () ->{
             node(heatproofConveyor, ()->{
                 node(heatproofJunction, ()->{
                     node(heatproofRouter, ()->{
