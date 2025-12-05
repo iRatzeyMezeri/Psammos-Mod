@@ -7,7 +7,7 @@ import psammos.type.RadiationType;
 
 public interface RadiationConsumer {
     void addRadiationInput(Building build);
-    boolean acceptsRadiation(RadiationType type, int from);
+    default boolean acceptsRadiation(RadiationType type, int from) {return true;};
     default float incomingBeamOffset() {
         return 0;
     }

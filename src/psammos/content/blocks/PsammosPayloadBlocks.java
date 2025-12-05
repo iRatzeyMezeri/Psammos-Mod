@@ -1,30 +1,28 @@
 package psammos.content.blocks;
 
-import mindustry.content.Items;
-import mindustry.content.Liquids;
-import mindustry.content.StatusEffects;
-import mindustry.type.Category;
-import mindustry.type.UnitType;
+import arc.struct.*;
+import mindustry.content.*;
+import mindustry.type.*;
 import mindustry.world.*;
-import mindustry.world.blocks.payloads.PayloadConveyor;
-import mindustry.world.blocks.payloads.PayloadRouter;
-import mindustry.world.blocks.units.Reconstructor;
-import mindustry.world.blocks.units.UnitFactory;
-import psammos.content.PsammosItems;
-import psammos.content.PsammosLiquids;
-import psammos.content.PsammosUnitTypes;
-import psammos.world.blocks.units.PayloadGate;
-import psammos.world.blocks.units.RepairDroneAssembler;
-import psammos.world.blocks.units.StatusTower;
+import mindustry.world.blocks.defense.Wall;
+import mindustry.world.blocks.payloads.*;
+import mindustry.world.blocks.units.*;
+import mindustry.world.meta.BuildVisibility;
+import psammos.content.*;
+import psammos.type.RadiationStack;
+import psammos.type.RadiationType;
+import psammos.world.blocks.units.*;
 
 import static mindustry.type.ItemStack.with;
 
 public class PsammosPayloadBlocks {
     public static Block
-            //Unit forges
+            //Unit production
             specialistUnitForge, assaultUnitForge, supportUnitForge, scoutUnitForge, frontlineUnitForge,
             //Unit recombiners
             specialistUnitRecombiner, assaultUnitRecombiner, supportUnitRecombiner, scoutUnitRecombiner, frontlineUnitRecombiner,
+            //Block production
+            centralProcessingUnit, lithographicPrinter,
             //Unit buff towers
             overclockTower, repairDroneAssembler,
             //Distribution
@@ -146,6 +144,22 @@ public class PsammosPayloadBlocks {
             upgrades.addAll(
                     new UnitType[]{PsammosUnitTypes.pawn, PsammosUnitTypes.knight}
             );
+        }};
+
+        centralProcessingUnit = new Wall("central-processing-unit"){{
+            requirements(Category.units, with(Items.silicon, 50, PsammosItems.silver, 20, PsammosItems.quartz, 20));
+            placeablePlayer = false;
+            size = 2;
+        }};
+
+        lithographicPrinter = new RadiationConstructor("lithographic-printer"){{
+            requirements(Category.units, with(PsammosItems.quartz, 60, PsammosItems.refinedMetal, 70, PsammosItems.desertGlassShard, 30));
+
+            size = 3;
+            color = RadiationType.UV.color;
+            radiationRequirements = Seq.with(new RadiationStack(RadiationType.UV, 10f));
+            consumePower(2f);
+            filter = Seq.with(centralProcessingUnit);
         }};
 
         repairDroneAssembler = new RepairDroneAssembler("repair-drone-assembler"){{

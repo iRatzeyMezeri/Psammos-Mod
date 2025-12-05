@@ -20,7 +20,7 @@ public class PsammosDistributionBlocks {
 
             health = 45;
             speed = 0.09f;
-            displayedSpeed = 9f;
+            displayedSpeed = 12.75f;
             buildCostMultiplier = 2f;
             itemCapacity = 3;
         }};
@@ -30,7 +30,7 @@ public class PsammosDistributionBlocks {
 
             health = 180;
             speed = 0.12f;
-            displayedSpeed = 12f;
+            displayedSpeed = 16f;
             buildCostMultiplier = 2f;
             itemCapacity = 3;
         }};
