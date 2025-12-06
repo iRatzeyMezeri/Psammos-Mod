@@ -147,7 +147,7 @@ public class PsammosPayloadBlocks {
         }};
 
         centralProcessingUnit = new Wall("central-processing-unit"){{
-            requirements(Category.units, with(Items.silicon, 50, PsammosItems.silver, 20, PsammosItems.quartz, 20));
+            requirements(Category.units, with(Items.silicon, 50, PsammosItems.silver, 40));
             placeablePlayer = false;
             size = 2;
         }};
