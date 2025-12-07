@@ -7,7 +7,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.blocks.units.*;
-import mindustry.world.meta.BuildVisibility;
 import psammos.content.*;
 import psammos.type.RadiationStack;
 import psammos.type.RadiationType;
@@ -23,6 +22,8 @@ public class PsammosPayloadBlocks {
             specialistUnitRecombiner, assaultUnitRecombiner, supportUnitRecombiner, scoutUnitRecombiner, frontlineUnitRecombiner,
             //Block production
             centralProcessingUnit, lithographicPrinter,
+            //Unit welders
+            specialistUnitWelder, assaultUnitWelder, supportUnitWelder, scoutUnitWelder, frontlineUnitWelder,
             //Unit buff towers
             overclockTower, repairDroneAssembler,
             //Distribution
@@ -158,8 +159,78 @@ public class PsammosPayloadBlocks {
             size = 3;
             color = RadiationType.UV.color;
             radiationRequirements = Seq.with(new RadiationStack(RadiationType.UV, 10f));
-            consumePower(2f);
+            hasPower = consumesPower = false;
             filter = Seq.with(centralProcessingUnit);
+        }};
+
+        specialistUnitWelder = new UnitAssembler("specialist-unit-welder"){{
+            requirements(Category.units, with(Items.silicon, 1));
+
+            droneType = PsammosUnitTypes.weldingDrone;
+            size = 5;
+            plans.add(
+                    new AssemblerUnitPlan(PsammosUnitTypes.maw, 60f * 25f, PayloadStack.list(PsammosUnitTypes.fang, 5, centralProcessingUnit, 1))
+            );
+            areaSize = 11;
+
+            consumePower(3f);
+            consumeLiquid(Liquids.hydrogen, 9 / 60f);
+        }};
+
+        assaultUnitWelder = new UnitAssembler("assault-unit-welder"){{
+            requirements(Category.units, with(Items.silicon, 1));
+
+            droneType = PsammosUnitTypes.weldingDrone;
+            size = 5;
+            plans.add(
+                    new AssemblerUnitPlan(PsammosUnitTypes.spear, 60f * 35f, PayloadStack.list(PsammosUnitTypes.glaive, 5, centralProcessingUnit, 1))
+            );
+            areaSize = 11;
+
+            consumePower(3f);
+            consumeLiquid(Liquids.hydrogen, 9 / 60f);
+        }};
+
+        supportUnitWelder = new UnitAssembler("support-unit-welder"){{
+            requirements(Category.units, with(Items.silicon, 1));
+
+            droneType = PsammosUnitTypes.weldingDrone;
+            size = 5;
+            plans.add(
+                    new AssemblerUnitPlan(PsammosUnitTypes.trisect, 60f * 40f, PayloadStack.list(PsammosUnitTypes.sine, 5, centralProcessingUnit, 1))
+            );
+            areaSize = 11;
+
+            consumePower(3f);
+            consumeLiquid(Liquids.hydrogen, 9 / 60f);
+        }};
+
+        scoutUnitWelder = new UnitAssembler("scout-unit-welder"){{
+            requirements(Category.units, with(Items.silicon, 1));
+
+            droneType = PsammosUnitTypes.weldingDrone;
+            size = 5;
+            plans.add(
+                    new AssemblerUnitPlan(PsammosUnitTypes.exilis, 60f * 45f, PayloadStack.list(PsammosUnitTypes.sciur, 5, centralProcessingUnit, 1))
+            );
+            areaSize = 11;
+
+            consumePower(3f);
+            consumeLiquid(Liquids.hydrogen, 9 / 60f);
+        }};
+
+        frontlineUnitWelder = new UnitAssembler("frontline-unit-welder"){{
+            requirements(Category.units, with(Items.silicon, 1));
+
+            droneType = PsammosUnitTypes.weldingDrone;
+            size = 5;
+            plans.add(
+                    new AssemblerUnitPlan(PsammosUnitTypes.bishop, 60f * 40f, PayloadStack.list(PsammosUnitTypes.pawn, 5, centralProcessingUnit, 1))
+            );
+            areaSize = 11;
+
+            consumePower(3f);
+            consumeLiquid(Liquids.hydrogen, 9 / 60f);
         }};
 
         repairDroneAssembler = new RepairDroneAssembler("repair-drone-assembler"){{

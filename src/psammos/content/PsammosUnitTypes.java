@@ -51,7 +51,7 @@ public class PsammosUnitTypes {
     pawn, knight, bishop, rook, queen,
 
     //Other
-    repairDrone, secretGerb;
+    weldingDrone, repairDrone, secretGerb;
 
     public static void load() {
         gradient = new UnitType("1a-gradient"){{
@@ -1757,6 +1757,31 @@ public class PsammosUnitTypes {
                         }};
                     }}
             );
+        }};
+
+        weldingDrone = new UnitType("welding-drone"){{
+            controller = u -> new AssemblerAI();
+            constructor = BuildingTetherPayloadUnit::create;
+
+            flying = true;
+            drag = 0.06f;
+            accel = 0.11f;
+            speed = 1.3f;
+            health = 90;
+            engineSize = 2f;
+            engineOffset = 6.5f;
+            payloadCapacity = 0f;
+            targetable = false;
+            bounded = false;
+
+            outlineColor = PPal.unitOutline;
+            isEnemy = false;
+            hidden = true;
+            useUnitCap = false;
+            logicControllable = false;
+            playerControllable = false;
+            allowedInPayloads = false;
+            createWreck = false;
         }};
 
         repairDrone = new UnitType("repair-drone"){{
