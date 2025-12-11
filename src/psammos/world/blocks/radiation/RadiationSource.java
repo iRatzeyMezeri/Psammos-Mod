@@ -96,7 +96,7 @@ public class RadiationSource extends Block {
     }
 
     public class RadiationSourceBuild extends Building implements RadiationEmitter {
-        RadiationType radOutputType = RadiationType.light;
+        public RadiationType radOutputType = RadiationType.light;
 
         @Override
         public void draw() {

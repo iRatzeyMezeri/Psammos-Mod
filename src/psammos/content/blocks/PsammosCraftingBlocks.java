@@ -19,6 +19,7 @@ import psammos.content.*;
 import psammos.type.RadiationStack;
 import psammos.type.RadiationType;
 import psammos.world.blocks.heat.RadiationHeatProducer;
+import psammos.world.blocks.radiation.RadiationProducer;
 import psammos.world.draw.*;
 
 import static mindustry.type.ItemStack.with;
@@ -421,27 +422,54 @@ public class PsammosCraftingBlocks {
             consumeLiquid(PsammosLiquids.ammonia, 1f / 60f);
         }};
 
+        heatRadiator = new RadiationProducer("heat-radiator"){{
+            requirements(Category.crafting, with(PsammosItems.aerogel, 40, Items.silicon, 20, PsammosItems.refinedMetal, 20, PsammosItems.desertGlassShard, 20));
+
+            size = 3;
+            squareSprite = false;
+
+            heatRequirement = 10;
+            maxEfficiency = 4f;
+
+            drawer = new DrawMulti(
+                    new DrawDefault(),
+                    new DrawHeatInput(),
+                    new DrawDirectionalRegion(),
+                    new DrawGlowRegion(){{
+                        color = new Color(1f, 0.22f, 0.22f, 0.8f);
+                        alpha = 0.8f;
+                    }},
+                    new DrawRadiationBeams()
+            );
+            rotate = true;
+            rotateDraw = false;
+
+            radOutputAmount = 9;
+            radOutputType = RadiationType.IR;
+            craftTime = 60;
+        }};
+
         infraredHeater = new RadiationHeatProducer("infrared-heater"){{
             requirements(Category.crafting, with(PsammosItems.aerogel, 20, Items.silicon, 40, PsammosItems.refinedMetal, 20, PsammosItems.desertGlassShard, 20));
 
             size = 3;
             squareSprite = false;
 
-            radiationRequirements = Seq.with(new RadiationStack(RadiationType.IR, 5f));
+            radiationRequirements = Seq.with(new RadiationStack(RadiationType.IR, 10f));
             maxEfficiency = 4f;
 
             drawer = new DrawMulti(
                     new DrawDefault(),
                     new DrawHeatOutput(),
                     new DrawGlowRegion(){{
-                        color = Pal.redLight;
+                        color = new Color(1f, 0.22f, 0.22f, 0.8f);
                         alpha = 0.4f;
                     }}
             );
             rotate = true;
             rotateDraw = false;
 
-            heatOutput = 4;
+            heatOutput = 9;
             craftTime = 60;
         }};
 

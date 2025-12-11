@@ -18,9 +18,9 @@ import static mindustry.Vars.tilesize;
 public class DrawRadiationBeams extends DrawBlock {
     public TextureRegion beam, beamEnd;
 
-    public float minRadiation = 15;
-    public float maxRadiation = 50;
-    public float baseBeamScale = 0.6f;
+    public float minRadiation = 30;
+    public float maxRadiation = 90;
+    public float baseBeamScale = 0.7f;
 
     @Override
     public void load(Block block) {
