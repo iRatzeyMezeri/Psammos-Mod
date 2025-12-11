@@ -4,6 +4,7 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
+import arc.struct.Seq;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.effect.*;
@@ -15,6 +16,9 @@ import mindustry.world.blocks.production.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 import psammos.content.*;
+import psammos.type.RadiationStack;
+import psammos.type.RadiationType;
+import psammos.world.blocks.heat.RadiationHeatProducer;
 import psammos.world.draw.*;
 
 import static mindustry.type.ItemStack.with;
@@ -26,7 +30,7 @@ public class PsammosCraftingBlocks {
             centrifuge, purifier, thermolysisChamber, refinery,
             blastManufacturer, oilDistillationTower, atmosphericSeparator,
             //Heat
-            heatExchanger, ozoneHeater, peatHeater, ammoniaHeater, heatPump, heatPumpRouter,
+            heatExchanger, ozoneHeater, peatHeater, ammoniaHeater, heatRadiator, infraredHeater, heatPump, heatPumpRouter,
             //More factories
             aerogelPressurizer, steamReformer, ammoniaCompressor, memoryAlloyCrucible,
             //Obliterator
@@ -415,6 +419,30 @@ public class PsammosCraftingBlocks {
             craftTime = 60;
 
             consumeLiquid(PsammosLiquids.ammonia, 1f / 60f);
+        }};
+
+        infraredHeater = new RadiationHeatProducer("infrared-heater"){{
+            requirements(Category.crafting, with(PsammosItems.aerogel, 20, Items.silicon, 40, PsammosItems.refinedMetal, 20, PsammosItems.desertGlassShard, 20));
+
+            size = 3;
+            squareSprite = false;
+
+            radiationRequirements = Seq.with(new RadiationStack(RadiationType.IR, 5f));
+            maxEfficiency = 4f;
+
+            drawer = new DrawMulti(
+                    new DrawDefault(),
+                    new DrawHeatOutput(),
+                    new DrawGlowRegion(){{
+                        color = Pal.redLight;
+                        alpha = 0.4f;
+                    }}
+            );
+            rotate = true;
+            rotateDraw = false;
+
+            heatOutput = 4;
+            craftTime = 60;
         }};
 
         heatPump = new HeatConductor("heat-pump"){{
