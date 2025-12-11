@@ -41,10 +41,6 @@ public class PsammosStats {
             }
         }}).size(iconMed).padRight(3  + (stack.amount != 0 ? (Strings.autoFixed(stack.amount, 2).length() - 1) * 10 : 0));
 
-        if(stack.amount != 0){
-            t.add(StatUnit.perSecond.localized()).padLeft(2).padRight(5).color(Color.lightGray).style(Styles.outlineLabel);
-        }
-
         t.add(stack.type.localizedName());
 
         return t;
