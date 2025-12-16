@@ -735,8 +735,8 @@ public class PsammosUnitTypes {
 
             weapons.addAll(
                 new Weapon("psammos-sine-gun"){{
-                    x = 3;
-                    y = -2;
+                    x = -4f;
+                    y = -1;
                     reload = 18;
                     shootSound = Sounds.lasershoot;
                     ejectEffect = Fx.none;
