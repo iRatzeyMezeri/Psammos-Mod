@@ -24,7 +24,9 @@ import psammos.ai.*;
 import psammos.content.*;
 import psammos.entities.bullet.*;
 import psammos.entities.patterns.*;
+import psammos.type.RadiationType;
 import psammos.world.blocks.legacy.LegacyTurret;
+import psammos.world.blocks.turrets.ContinuousRadiationTurret;
 
 import static mindustry.type.ItemStack.*;
 
@@ -33,6 +35,7 @@ public class PsammosTurrets {
             //Turrets
             cross, disseminate, hurl, confine, influence, gunslinger,
             spray, seize, discharge, burst, overflow, dawn, burden,
+            luminosity,
             //Legacy
             influenceOld;
 
@@ -1042,6 +1045,55 @@ public class PsammosTurrets {
                             mirror = true;
                             turretShading = true;
                             layerOffset = -0.01f;
+                        }}
+                );
+            }};
+        }};
+
+        luminosity = new ContinuousRadiationTurret("luminosity"){{
+            requirements(Category.turret, with(Items.sand, 80, PsammosItems.refinedMetal, 80, PsammosItems.desertGlassShard, 30, PsammosItems.memoryAlloy, 30, PsammosItems.silver, 130));
+
+            ammo(
+                    RadiationType.light, new ContinuousFlameBulletType(){{
+                        damage = 20f;
+                        length = 120;
+                        knockback = 1f;
+                        pierceCap = 2;
+                        buildingDamageMultiplier = 0.3f;
+                        timescaleDamage = true;
+
+                        colors = new Color[]{Pal.accent};
+                        drawFlare = false;
+                    }}
+            );
+
+            size = 3;
+            health = 600;
+            squareSprite = false;
+            targetGround = true;
+            targetAir = false;
+            range = 120;
+            shootY = 0;
+
+            drawer = new DrawTurret("heatproof-"){{
+                parts.addAll(
+                        new RegionPart("-wing"){{
+                            progress = PartProgress.warmup;
+                            moveRot = -25f;
+                            moveY = -1f;
+                            moveX = 1f;
+                            x = 5;
+                            y = -3;
+                            mirror = true;
+                            turretShading = true;
+                        }},
+                        new RegionPart("-arm"){{
+                            progress = PartProgress.warmup;
+                            moveRot = -35f;
+                            moveY = 2f;
+                            moveX = 1f;
+                            mirror = true;
+                            turretShading = true;
                         }}
                 );
             }};

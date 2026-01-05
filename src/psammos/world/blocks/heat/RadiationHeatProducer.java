@@ -54,7 +54,6 @@ public class RadiationHeatProducer extends HeatProducer {
     public class RadiationHeatProducerBuild extends HeatProducerBuild implements RadiationConsumer {
         public Seq<Building> radiationInputs = new Seq<>();
         public ArrayMap<RadiationType, Float> radiations = new ArrayMap<>();
-        public float efficiencyPercent = 0;
 
         @Override
         public float efficiencyScale() {

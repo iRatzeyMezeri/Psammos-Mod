@@ -12,6 +12,19 @@ public interface RadiationConsumer {
         return 0;
     }
 
+    default RadiationStack calculateHighestRadiation(Building build, Seq<Building> inputs){
+        ArrayMap<RadiationType, Float> all = calculateRadiationTypes(build, inputs);
+        RadiationType type = null;
+        float amount = 0;
+        for (int i = 0; i < all.size; i++) {
+            if (type == null || all.getValueAt(i) > amount) {
+                type = all.getKeyAt(i);
+                amount = all.getValueAt(i);
+            }
+        }
+        return new RadiationStack(type, amount);
+    }
+
     default RadiationStack[] calculateSideRadiation(Building build, Seq<Building> inputs){
         RadiationStack[] sideRadiation = new RadiationStack[4];
         inputs.forEach(b -> {
