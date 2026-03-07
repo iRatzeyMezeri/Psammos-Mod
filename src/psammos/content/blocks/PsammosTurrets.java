@@ -652,7 +652,7 @@ public class PsammosTurrets {
         }};
 
         discharge = new ItemTurret("discharge"){{
-            requirements(Category.turret, with(Items.silicon, 30, PsammosItems.refinedMetal, 15, PsammosItems.silver, 20));
+            requirements(Category.turret, with(Items.silicon, 30, PsammosItems.refinedMetal, 30, PsammosItems.silver, 20, Items.blastCompound, 15));
 
             ammo(
                     PsammosItems.silver, new LightningTrailBulletType(){{
@@ -693,7 +693,6 @@ public class PsammosTurrets {
             shootY = -1;
 
             consumePower(3);
-            heatRequirement = 9;
 
             drawer = new DrawTurret("heatproof-"){{
                 parts.addAll(
