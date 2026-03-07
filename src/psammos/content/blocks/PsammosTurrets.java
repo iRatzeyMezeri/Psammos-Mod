@@ -688,7 +688,7 @@ public class PsammosTurrets {
             targetAir = true;
             targetGround = false;
             range = 180;
-            reload = 180;
+            reload = 90;
             velocityRnd = 0.2f;
             rotateSpeed = 4f;
             shootY = -1;
