@@ -663,6 +663,7 @@ public class PsammosCraftingBlocks {
             invertFlip = true;
             group = BlockGroup.liquids;
             itemCapacity = 0;
+            squareSprite = false;
 
             liquidCapacity = 50f;
 
