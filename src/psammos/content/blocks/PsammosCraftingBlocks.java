@@ -673,7 +673,7 @@ public class PsammosCraftingBlocks {
             drawer = new DrawMulti(
                 new DrawRegion("-bottom"),
                 new DrawLiquidTile(Liquids.water, 2f),
-                new DrawBubbles(Color.valueOf("7693e3")){{
+                new DrawBubbles(Color.valueOf("ffddaa")){{
                     sides = 10;
                     recurrence = 3f;
                     spread = 6;
@@ -684,7 +684,7 @@ public class PsammosCraftingBlocks {
                 new DrawLiquidOutputs(),
                 new DrawGlowRegion(){{
                     alpha = 0.7f;
-                    color = Color.valueOf("c4bdf3");
+                    color = Color.valueOf("ffddaa");
                     glowIntensity = 0.3f;
                     glowScale = 6f;
                 }}
