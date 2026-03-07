@@ -690,6 +690,7 @@ public class PsammosTurrets {
             range = 180;
             reload = 180;
             velocityRnd = 0.2f;
+            rotateSpeed = 4f;
             shootY = -1;
 
             consumePower(3);
