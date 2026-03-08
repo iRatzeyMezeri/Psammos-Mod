@@ -170,7 +170,7 @@ public class PsammosPayloadBlocks {
             droneType = PsammosUnitTypes.weldingDrone;
             size = 5;
             plans.add(
-                    new AssemblerUnitPlan(PsammosUnitTypes.maw, 60f * 25f, PayloadStack.list(PsammosUnitTypes.fang, 5, centralProcessingUnit, 1))
+                    new AssemblerUnitPlan(PsammosUnitTypes.maw, 60f * 25f, PayloadStack.list(PsammosUnitTypes.fang, 3, centralProcessingUnit, 1))
             );
             areaSize = 11;
 
@@ -184,7 +184,7 @@ public class PsammosPayloadBlocks {
             droneType = PsammosUnitTypes.weldingDrone;
             size = 5;
             plans.add(
-                    new AssemblerUnitPlan(PsammosUnitTypes.spear, 60f * 35f, PayloadStack.list(PsammosUnitTypes.glaive, 5, centralProcessingUnit, 1))
+                    new AssemblerUnitPlan(PsammosUnitTypes.spear, 60f * 35f, PayloadStack.list(PsammosUnitTypes.glaive, 4, centralProcessingUnit, 1))
             );
             areaSize = 11;
 
@@ -198,7 +198,7 @@ public class PsammosPayloadBlocks {
             droneType = PsammosUnitTypes.weldingDrone;
             size = 5;
             plans.add(
-                    new AssemblerUnitPlan(PsammosUnitTypes.trisect, 60f * 40f, PayloadStack.list(PsammosUnitTypes.sine, 5, centralProcessingUnit, 1))
+                    new AssemblerUnitPlan(PsammosUnitTypes.trisect, 60f * 40f, PayloadStack.list(PsammosUnitTypes.sine, 3, centralProcessingUnit, 1))
             );
             areaSize = 11;
 
@@ -212,7 +212,7 @@ public class PsammosPayloadBlocks {
             droneType = PsammosUnitTypes.weldingDrone;
             size = 5;
             plans.add(
-                    new AssemblerUnitPlan(PsammosUnitTypes.exilis, 60f * 45f, PayloadStack.list(PsammosUnitTypes.sciur, 5, centralProcessingUnit, 1))
+                    new AssemblerUnitPlan(PsammosUnitTypes.exilis, 60f * 45f, PayloadStack.list(PsammosUnitTypes.sciur, 4, centralProcessingUnit, 1))
             );
             areaSize = 11;
 
@@ -226,7 +226,7 @@ public class PsammosPayloadBlocks {
             droneType = PsammosUnitTypes.weldingDrone;
             size = 5;
             plans.add(
-                    new AssemblerUnitPlan(PsammosUnitTypes.bishop, 60f * 40f, PayloadStack.list(PsammosUnitTypes.pawn, 5, centralProcessingUnit, 1))
+                    new AssemblerUnitPlan(PsammosUnitTypes.bishop, 60f * 40f, PayloadStack.list(PsammosUnitTypes.pawn, 3, centralProcessingUnit, 1))
             );
             areaSize = 11;
 
