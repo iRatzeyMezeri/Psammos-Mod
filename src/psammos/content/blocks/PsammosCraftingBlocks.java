@@ -419,7 +419,7 @@ public class PsammosCraftingBlocks {
             heatOutput = 8;
             craftTime = 60;
 
-            consumeLiquid(PsammosLiquids.ammonia, 1f / 60f);
+            consumeLiquid(PsammosLiquids.ammonia, 0.5f / 60f);
         }};
 
         heatRadiator = new RadiationProducer("heat-radiator"){{
