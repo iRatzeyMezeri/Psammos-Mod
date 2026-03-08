@@ -315,14 +315,14 @@ public class PsammosTechTree {
                                             node(enfer, Seq.with(new SectorComplete(erodedDesert)), ()->{
 
                                             });
+                                            node(coruscatedCrevice, Seq.with(new SectorComplete(erodedDesert), new SectorComplete(ferricSummit)), ()->{
+
+                                            });
                                         });
                                         node(ferricSummit, Seq.with(new SectorComplete(oilRefiningFacility)), ()->{
                                             node(craterousRange, Seq.with(new SectorComplete(ferricSummit), new SectorComplete(ruinousHollow)), ()->{
 
                                             });
-                                        });
-                                        node(coruscatedCrevice, Seq.with(new SectorComplete(oilRefiningFacility), new SectorComplete(ferricSummit)), ()->{
-
                                         });
                                     });
                                 });
