@@ -282,6 +282,19 @@ public class PsammosTurrets {
                         homingRange = 50f;
                         buildingDamageMultiplier = 0.01f;
                     }}
+                    Items.blastCompound, new ArtilleryBulletType(){{
+                        collidesAir = true;
+                        width = 11;
+                        height = 11;
+                        speed = 3.5;
+                        lifetime = 70;
+                        collidesTiles = false;
+                        splashDamageRadius = 40f;
+                        splashDamage = 20f;
+                        reloadMultiplier = 1f;
+                        ammoMultiplier = 3f;
+                        buildingDamageMultiplier = 0.01f;
+                    }}
             );
 
             size = 2;
