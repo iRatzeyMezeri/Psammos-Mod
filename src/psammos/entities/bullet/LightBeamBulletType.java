@@ -67,8 +67,15 @@ public class LightBeamBulletType extends ContinuousBulletType {
         }
 
         Units.nearbyEnemies(b.team, b.x, b.y, length, (u) -> {
-            float angleToEnemy = Tmp.v1.set(1, 0).rotate(b.rotation()).angleTo(u.x - b.x, u.y - b.y);
-            if (Angles.angleDist(b.rotation(), angleToEnemy) <= angleWidth / 2f){
+            Tmp.v2.set(u.x - b.x, u.y - b.y); // Vector from bullet to enemy
+
+            float angleToEnemy = Tmp.v1.set(1, 0).rotate(b.rotation()).angleTo(Tmp.v2);
+            float angleDist = Angles.angleDist(b.rotation(), angleToEnemy);
+
+            float enemyRadius = u.type.hitSize / 2f;
+            float angleOffset = (float) Math.asin(enemyRadius / Tmp.v2.len()) * Mathf.radiansToDegrees;
+
+            if (angleDist - angleOffset <= angleWidth / 2f){
                 if (u.checkTarget(b.type.collidesAir, b.type.collidesGround) && u.hittable()){
                     u.collision(b, u.x, u.y);
                     b.collision(u, u.x, u.y);
