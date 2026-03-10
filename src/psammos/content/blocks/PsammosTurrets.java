@@ -281,7 +281,7 @@ public class PsammosTurrets {
                         homingPower = 0.1f;
                         homingRange = 50f;
                         buildingDamageMultiplier = 0.01f;
-                    }}
+                    }},
                     Items.blastCompound, new ArtilleryBulletType(){{
                         collidesAir = true;
                         width = 11;
