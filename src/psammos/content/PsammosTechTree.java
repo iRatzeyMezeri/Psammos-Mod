@@ -316,14 +316,14 @@ public class PsammosTechTree {
                                     node(oilRefiningFacility, Seq.with(new SectorComplete(evaporatedBasin)), ()->{
                                         node(erodedDesert, Seq.with(new SectorComplete(oilRefiningFacility), new Research(coreDune)), ()->{
                                             node(ruinousHollow, Seq.with(new SectorComplete(erodedDesert)), ()->{
-                                                node(scaldedPlains, Seq.with(new SectorComplete(ruinousHollow), new SectorComplete(craterousRange)), ()->{
-                                                    node(searingChasms, Seq.with(new SectorComplete(scaldedPlains)), ()->{
+                                                node(scaldedPlains, Seq.with(new SectorComplete(ruinousHollow)), ()->{
+                                                    node(searingChasms, Seq.with(new SectorComplete(scaldedPlains), new SectorComplete(craterousRange)), ()->{
+
+                                                    });
+                                                    node(enfer, Seq.with(new SectorComplete(scaldedPlains)), ()->{
 
                                                     });
                                                 });
-                                            });
-                                            node(enfer, Seq.with(new SectorComplete(erodedDesert)), ()->{
-
                                             });
                                             node(coruscatedCrevice, Seq.with(new SectorComplete(erodedDesert), new SectorComplete(ferricSummit)), ()->{
 
@@ -341,9 +341,9 @@ public class PsammosTechTree {
 
                             });
                         });
-                    });
-                    node(cavern, Seq.with(new SectorComplete(quartzValley)), ()->{
+                        node(cavern, Seq.with(new SectorComplete(driedRiver)), ()->{
 
+                        });
                     });
                 });
             });
