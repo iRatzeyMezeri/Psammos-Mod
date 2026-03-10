@@ -290,7 +290,7 @@ public class PsammosTurrets {
                         lifetime = 70;
                         collidesTiles = false;
                         splashDamageRadius = 40f;
-                        splashDamage = 20f;
+                        splashDamage = 17f;
                         reloadMultiplier = 1f;
                         ammoMultiplier = 3f;
                         buildingDamageMultiplier = 0.01f;
