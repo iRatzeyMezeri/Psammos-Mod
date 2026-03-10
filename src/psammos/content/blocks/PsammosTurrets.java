@@ -286,7 +286,7 @@ public class PsammosTurrets {
                         collidesAir = true;
                         width = 11;
                         height = 11;
-                        speed = 3.5;
+                        speed = 3.5f;
                         lifetime = 70;
                         collidesTiles = false;
                         splashDamageRadius = 40f;
