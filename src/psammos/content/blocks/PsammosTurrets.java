@@ -1054,16 +1054,17 @@ public class PsammosTurrets {
             requirements(Category.turret, with(Items.sand, 80, PsammosItems.refinedMetal, 80, PsammosItems.desertGlassShard, 30, PsammosItems.memoryAlloy, 30, PsammosItems.silver, 130));
 
             ammo(
-                    RadiationType.light, new ContinuousFlameBulletType(){{
-                        damage = 20f;
+                    RadiationType.light, new LightBeamBulletType(){{
+                        damage = 5f;
                         length = 120;
-                        knockback = 1f;
-                        pierceCap = 2;
-                        buildingDamageMultiplier = 0.3f;
+                        angleWidth = 60;
+                        buildingDamageMultiplier = 0.5f;
                         timescaleDamage = true;
 
-                        colors = new Color[]{Pal.accent};
-                        drawFlare = false;
+                        collidesAir = false;
+
+                        color = Pal.accent.cpy().a(0.8f);
+                        drawFlare = true;
                     }}
             );
 
@@ -1073,7 +1074,7 @@ public class PsammosTurrets {
             targetGround = true;
             targetAir = false;
             range = 120;
-            shootY = 0;
+            shootY = 2;
 
             drawer = new DrawTurret("heatproof-"){{
                 parts.addAll(
