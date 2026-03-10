@@ -12,5 +12,7 @@ public class PPal {
 
     memoryAlloy = Color.valueOf("#dc88e7"),
     desertGlass = Color.valueOf("#6ddac3"),
-    electric = Color.valueOf("#a9d8ff");
+    electric = Color.valueOf("#a9d8ff"),
+    blast = Color.valueOf("#fdb380"),
+    blast2 = Color.valueOf("#eb8778");
 }

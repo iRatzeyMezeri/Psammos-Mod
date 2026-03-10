@@ -209,10 +209,10 @@ public class PsammosTurrets {
 
                         trailWidth = 2;
                         trailLength = 4;
-                        hitColor = Color.valueOf("#fdb380");
-                        backColor = Color.valueOf("#eb8778");
-                        frontColor = Color.valueOf("#fdb380");
-                        trailColor = Color.valueOf("#eb8778");
+                        hitColor = PPal.blast;
+                        backColor = PPal.blast2;
+                        frontColor = PPal.blast;
+                        trailColor = PPal.blast2;
                         shootEffect = Fx.shootBig;
                         smokeEffect = Fx.shootSmokeSquare;
                         despawnEffect = hitEffect = Fx.hitSquaresColor;
@@ -294,6 +294,9 @@ public class PsammosTurrets {
                         reloadMultiplier = 1f;
                         ammoMultiplier = 3f;
                         buildingDamageMultiplier = 0.01f;
+                        frontColor = PPal.blast;
+                        backColor = PPal.blast2;
+                        despawnEffect = hitEffect = Fx.blastExplosion;
                     }}
             );
 
