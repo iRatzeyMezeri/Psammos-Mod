@@ -37,6 +37,7 @@ public interface RadiationEmitter {
         }
     }
 
+    //TODO: account for team
     /** Finds the tile radiation hits if the building emits it in the specified direction.
      * Returns null if no target was found */
     default Tile findRadiationTarget(Building build, int rotation){

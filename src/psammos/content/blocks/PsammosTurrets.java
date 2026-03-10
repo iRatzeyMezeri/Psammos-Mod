@@ -1055,8 +1055,8 @@ public class PsammosTurrets {
 
             ammo(
                     RadiationType.light, new LightBeamBulletType(){{
-                        damage = 5f;
-                        length = 120;
+                        damage = 6f;
+                        length = 110;
                         angleWidth = 60;
                         buildingDamageMultiplier = 0.5f;
                         timescaleDamage = true;
@@ -1064,6 +1064,20 @@ public class PsammosTurrets {
                         collidesAir = false;
 
                         color = Pal.accent.cpy().a(0.8f);
+                        drawFlare = true;
+                    }},
+                    RadiationType.IR, new LightBeamBulletType(){{
+                        damage = 3f;
+                        status = StatusEffects.burning;
+                        length = 110;
+                        angleWidth = 75;
+                        buildingDamageMultiplier = 0.5f;
+                        timescaleDamage = true;
+
+                        collidesAir = false;
+
+                        color = RadiationType.IR.color.cpy().a(0.8f);
+                        hitColor = flareColor = RadiationType.IR.color;
                         drawFlare = true;
                     }}
             );
@@ -1075,6 +1089,10 @@ public class PsammosTurrets {
             targetAir = false;
             range = 120;
             shootY = 2;
+            recoil = 0;
+            loopSound = Sounds.flux;
+            loopSoundVolume = 4.5f;
+            shootSound = Sounds.plasmadrop;
 
             drawer = new DrawTurret("heatproof-"){{
                 parts.addAll(
