@@ -1058,36 +1058,24 @@ public class PsammosTurrets {
                         damage = 6f;
                         length = 110;
                         angleWidth = 60;
-                        buildingDamageMultiplier = 0.5f;
+                        buildingDamageMultiplier = 0f;
                         timescaleDamage = true;
 
                         collidesAir = false;
+                        collidesTiles = false;
 
                         color = Pal.accent.cpy().a(0.8f);
-                        drawFlare = true;
-                    }},
-                    RadiationType.IR, new LightBeamBulletType(){{
-                        damage = 3f;
-                        status = StatusEffects.burning;
-                        length = 110;
-                        angleWidth = 75;
-                        buildingDamageMultiplier = 0.5f;
-                        timescaleDamage = true;
-
-                        collidesAir = false;
-
-                        color = RadiationType.IR.color.cpy().a(0.8f);
-                        hitColor = flareColor = RadiationType.IR.color;
                         drawFlare = true;
                     }}
             );
 
-            size = 3;
-            health = 600;
+            size = 4;
+            health = 1020;
             squareSprite = false;
             targetGround = true;
             targetAir = false;
-            range = 120;
+            targetBlocks = false;
+            range = 110;
             shootY = 2;
             recoil = 0;
             loopSound = Sounds.flux;

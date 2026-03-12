@@ -7,8 +7,6 @@ import mindustry.entities.bullet.*;
 import mindustry.gen.Building;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.meta.Stat;
-import mindustry.world.meta.StatValues;
 import psammos.type.RadiationStack;
 import psammos.type.RadiationType;
 import psammos.world.blocks.radiation.RadiationConsumer;
