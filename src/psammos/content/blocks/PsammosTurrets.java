@@ -209,10 +209,10 @@ public class PsammosTurrets {
 
                         trailWidth = 2;
                         trailLength = 4;
-                        hitColor = Color.valueOf("#fdb380");
-                        backColor = Color.valueOf("#eb8778");
-                        frontColor = Color.valueOf("#fdb380");
-                        trailColor = Color.valueOf("#eb8778");
+                        hitColor = PPal.blast;
+                        backColor = PPal.blast2;
+                        frontColor = PPal.blast;
+                        trailColor = PPal.blast2;
                         shootEffect = Fx.shootBig;
                         smokeEffect = Fx.shootSmokeSquare;
                         despawnEffect = hitEffect = Fx.hitSquaresColor;
@@ -281,6 +281,22 @@ public class PsammosTurrets {
                         homingPower = 0.1f;
                         homingRange = 50f;
                         buildingDamageMultiplier = 0.01f;
+                    }},
+                    Items.blastCompound, new ArtilleryBulletType(){{
+                        collidesAir = true;
+                        width = 11;
+                        height = 11;
+                        speed = 3.5f;
+                        lifetime = 70;
+                        collidesTiles = false;
+                        splashDamageRadius = 40f;
+                        splashDamage = 17f;
+                        reloadMultiplier = 1f;
+                        ammoMultiplier = 3f;
+                        buildingDamageMultiplier = 0.01f;
+                        frontColor = PPal.blast;
+                        backColor = PPal.blast2;
+                        despawnEffect = hitEffect = Fx.blastExplosion;
                     }}
             );
 
@@ -652,7 +668,7 @@ public class PsammosTurrets {
         }};
 
         discharge = new ItemTurret("discharge"){{
-            requirements(Category.turret, with(Items.silicon, 30, PsammosItems.refinedMetal, 15, PsammosItems.silver, 20));
+            requirements(Category.turret, with(Items.silicon, 30, PsammosItems.refinedMetal, 30, PsammosItems.silver, 20, Items.blastCompound, 15));
 
             ammo(
                     PsammosItems.silver, new LightningTrailBulletType(){{
@@ -688,12 +704,12 @@ public class PsammosTurrets {
             targetAir = true;
             targetGround = false;
             range = 180;
-            reload = 180;
+            reload = 90;
             velocityRnd = 0.2f;
+            rotateSpeed = 4f;
             shootY = -1;
 
             consumePower(3);
-            heatRequirement = 9;
 
             drawer = new DrawTurret("heatproof-"){{
                 parts.addAll(

@@ -60,12 +60,12 @@ public class PsammosWalls {
 
         gate = new AutoDoor("gate"){{
             requirements(Category.defense, with(PsammosItems.quartz, 6, Items.silicon, 4));
-            health = 110 * wallHealthMultiplier;
+            health = 100 * wallHealthMultiplier;
         }};
 
         gateLarge = new AutoDoor("gate-large"){{
             requirements(Category.defense, mult(gate.requirements, 4));
-            health = 110 * wallHealthMultiplier * 4;
+            health = 100 * wallHealthMultiplier * 4;
             size = 2;
         }};
 

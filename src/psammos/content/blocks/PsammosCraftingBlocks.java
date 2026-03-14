@@ -33,7 +33,7 @@ public class PsammosCraftingBlocks {
             //Heat
             heatExchanger, ozoneHeater, peatHeater, ammoniaHeater, heatRadiator, infraredHeater, heatPump, heatPumpRouter,
             //More factories
-            aerogelPressurizer, steamReformer, ammoniaCompressor, memoryAlloyCrucible,
+            aerogelPressurizer, steamReformer, ammoniaCompressor, memoryAlloyCrucible, splitterCell,
             //Obliterator
             obliterator;
 
@@ -419,7 +419,7 @@ public class PsammosCraftingBlocks {
             heatOutput = 8;
             craftTime = 60;
 
-            consumeLiquid(PsammosLiquids.ammonia, 1f / 60f);
+            consumeLiquid(PsammosLiquids.ammonia, 0.5f / 60f);
         }};
 
         heatRadiator = new RadiationProducer("heat-radiator"){{
@@ -448,7 +448,7 @@ public class PsammosCraftingBlocks {
             radOutputType = RadiationType.IR;
             craftTime = 60;
         }};
-
+        
         infraredHeater = new RadiationHeatProducer("infrared-heater"){{
             requirements(Category.crafting, with(PsammosItems.aerogel, 20, Items.silicon, 40, PsammosItems.refinedMetal, 20, PsammosItems.desertGlassShard, 20));
 
@@ -652,6 +652,48 @@ public class PsammosCraftingBlocks {
             consumeLiquid(Liquids.slag, 8/60f);
             consumeLiquid(Liquids.hydrogen, 3/60f);
             consumeItem(PsammosItems.silver, 3);
+        }};
+        
+        splitterCell = new GenericCrafter("splitter-cell"){{
+            requirements(Category.crafting, with(PsammosItems.desertGlassShard, 20, Items.silicon, 60, PsammosItems.quartz, 20, PsammosItems.refinedMetal, 40));
+            size = 3;
+
+            craftTime = 10f;
+            rotate = true;
+            invertFlip = true;
+            group = BlockGroup.liquids;
+            itemCapacity = 0;
+            squareSprite = false;
+
+            liquidCapacity = 50f;
+
+            consumeLiquid(Liquids.water, 12f / 60f);
+            consumePower(2f);
+            // + ultraviolet ig cuz it seems to be nearby in progression
+
+            drawer = new DrawMulti(
+                new DrawRegion("-bottom"),
+                new DrawLiquidTile(Liquids.water, 2f),
+                new DrawBubbles(Color.valueOf("ffddaa")){{
+                    sides = 10;
+                    recurrence = 3f;
+                    spread = 6;
+                    radius = 1.5f;
+                    amount = 20;
+                }},
+                new DrawRegion(),
+                new DrawLiquidOutputs(),
+                new DrawGlowRegion(){{
+                    alpha = 0.7f;
+                    color = Color.valueOf("ffddaa");
+                    glowIntensity = 0.3f;
+                    glowScale = 6f;
+                }}
+            );
+
+            regionRotated1 = 3;
+            outputLiquids = LiquidStack.with(Liquids.ozone, 8f / 60, Liquids.hydrogen, 4f / 60);
+            liquidOutputDirections = new int[]{1, 3};
         }};
 
         obliterator = new Incinerator("Zz-obliterator"){{
