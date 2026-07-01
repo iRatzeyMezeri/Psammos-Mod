@@ -1084,7 +1084,7 @@ public class PsammosTurrets {
             );
 
             size = 3;
-            health = 600;
+            health = 720;
             squareSprite = false;
             targetGround = true;
             targetAir = false;
